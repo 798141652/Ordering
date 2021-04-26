@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <TextView
+        android:id="@+id/reg_note"
+        style="title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:text="填写注册信息" />
+
+
+
+    <TextView
+        android:id="@+id/text_userID"
+        style="text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/reg_note"
+        android:layout_marginTop="15dp"
+        android:text="用户名" />
+
+    <EditText
+        android:id="@+id/reg_userID"
+        style="inputText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/text_userID"
+        android:layout_toRightOf="@+id/text_userID"
+        android:hint="请输入用户名" />
+
+
+    <TextView
+        android:id="@+id/text_password"
+        style="text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text_userID"
+        android:layout_marginTop="20dp"
+        android:text="密码" />
+
+
+    <EditText
+        android:id="@+id/reg_passowrd"
+        style="inputText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/text_password"
+        android:layout_alignLeft="@+id/reg_userID"
+        android:layout_toRightOf="@+id/text_password"
+        android:hint="请输入密码"
+        android:inputType="textPassword" />
+
+
+    <TextView
+        android:id="@+id/textConfirm"
+        style="text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text_password"
+        android:layout_marginTop="20dp"
+        android:text="密码确认" />
+
+
+    <EditText
+        android:id="@+id/reg_confirm"
+        style="inputText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/textConfirm"
+        android:layout_alignLeft="@+id/reg_userID"
+        android:layout_toRightOf="@+id/textConfirm"
+        android:hint="密码确认"
+        android:inputType="textPassword" />
+
+    <Button
+        android:id="@+id/reg_btn_register"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/reg_confirm"
+        android:text="注册" />
+
+    <Button
+        android:id="@+id/reg_btn_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/reg_btn_register"
+        android:layout_toRightOf="@+id/reg_btn_register"
+        android:text="返回登陆" />
+    <Button
+        android:id="@+id/take_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/reg_btn_register"
+        android:layout_toRightOf="@+id/reg_btn_login"
+        android:text="拍照"/>
+    <Button
+        android:id="@+id/select_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/reg_btn_register"
+        android:layout_toRightOf="@+id/take_image"
+        android:text="相册选择照片"/>
+
+    <ImageView
+        android:id="@+id/user_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/select_image" />
+
+
+
+</RelativeLayout>
