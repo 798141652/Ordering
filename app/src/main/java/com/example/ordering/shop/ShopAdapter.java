@@ -73,7 +73,6 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.ViewHolder> {
     public void onBindViewHolder(@NonNull ShopAdapter.ViewHolder holder, int position) {
         Shop shop = mShopList.get(position);
         holder.shopName.setText(shop.getShopName());
-
         //使用Glide来加载水果照片
         //Glide.with()方法传入一个Context、Activity或Fragment参数
         //然后调用load()方法去加载图片，可以是一个URL地址，也可以是一个本地路径，或者是一个资源id

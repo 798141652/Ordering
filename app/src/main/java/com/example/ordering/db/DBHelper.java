@@ -82,18 +82,18 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         //db.execSQL("DROP TABLE IF EXISTS " + SHOP_TABLE);
-        String sql = "create table " + SHOP_TABLE + "(" + SHOP_ID + " integer primary key," +
+        String sql = "create table if not exists " + SHOP_TABLE + "(" + SHOP_ID + " integer primary key," +
                 SHOP_NAME + " text," + SHOP_IMAGE + " text," + SHOP_LOC + " text,"  + SHOP_BRI + " text);";
         db.execSQL(sql);
 
         //db.execSQL("DROP TABLE IF EXISTS " + DISH_TABLE);
-        sql = "create table " + DISH_TABLE + "(" + DISH_ID + " integer primary key," +
+        sql = "create table if not exists " + DISH_TABLE + "(" + DISH_ID + " integer primary key," +
                 DISH_SHOP_ID + " integer," + DISH_NAME + " text,"  + DISH_IMAGE + " integer,"+
                 DISH_PRICE + " float, " + DISH_TYPE + " text);";
         db.execSQL(sql);
 
         //db.execSQL("DROP TABLE IF EXISTS " + USER_TABLE);
-        sql = "create table " + USER_TABLE + "(" + UID + " integer primary key," +
+        sql = "create table if not exists " + USER_TABLE + "(" + UID + " integer primary key," +
                 NAME + " text," + UKEY + " text,"   + PHONE + " text," + IMAGE + " integer,"
                 + TYPE + " text);";
         db.execSQL(sql);

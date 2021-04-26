@@ -46,13 +46,11 @@ public class ShopDBManager {
             db = dbhelper.getReadableDatabase();
         }
         //获取服务器数据
-        new Thread(new Runnable() {
+        /*new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
 
-
-                    System.out.println("Thread starts");
                     OkHttpClient client = new OkHttpClient();
 
                     //生成json文件
@@ -81,7 +79,7 @@ public class ShopDBManager {
                     e.printStackTrace();
                 }
             }
-        }).start();
+        }).start();*/
     }
 
     public SQLiteDatabase getDb() {
@@ -107,6 +105,7 @@ public class ShopDBManager {
         db.delete(TABLE, SHOP_ID + "='" + shopid + "'", null);
     }
 
+    /*
     private void parseJSONWithGSON(String jsonData) {
         Gson gson = new Gson();
         List<Shop> shopList = gson.fromJson(jsonData, new TypeToken<List<Shop>>() {
@@ -123,8 +122,6 @@ public class ShopDBManager {
         Gson gson = new Gson();
         List<ShopImage> shopImageList = gson.fromJson(jsonData, new TypeToken<List<ShopImage>>() {
         }.getType());
-
-
 
         //db.delete(TABLE,null,null);
         for (ShopImage shopImage : shopImageList) {
@@ -149,5 +146,5 @@ public class ShopDBManager {
         }
         return filePath;
     }
-
+*/
 }

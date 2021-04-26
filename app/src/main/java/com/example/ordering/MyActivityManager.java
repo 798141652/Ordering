@@ -10,7 +10,6 @@ public class MyActivityManager {
 
 
     private MyActivityManager() {
-
     }
 
     public static MyActivityManager getInstance() {
