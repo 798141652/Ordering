@@ -1,9 +1,7 @@
 package com.example.ordering.ui.home;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,23 +14,18 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.example.ordering.Base64Tool;
-import com.example.ordering.db.DBHelper;
 import com.example.ordering.db.ShopDBManager;
 import com.example.ordering.order.OrderedActivity;
-import com.example.ordering.shop.ShopActivity;
 import com.example.ordering.structure.MyApplication;
 import com.example.ordering.R;
 import com.example.ordering.shop.ShopAdapter;
 import com.example.ordering.structure.Shop;
-import com.example.ordering.structure.ShopImage;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import okhttp3.OkHttpClient;
@@ -40,6 +33,8 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 public class HomeFragment extends Fragment {
+
+    private MyApplication app;
 
     private HomeViewModel homeViewModel;
 
@@ -68,7 +63,7 @@ public class HomeFragment extends Fragment {
     public void initViews() {
         shopDBManager = new ShopDBManager(MyApplication.getContext());
         shopDBManager.open();
-        MyApplication app = (MyApplication) MyApplication.getContext().getApplicationContext();
+        app = (MyApplication) MyApplication.getContext().getApplicationContext();
         FloatingActionButton floatingActionButton = root.findViewById(R.id.fab);
         //悬浮按钮判断是否登录，未登录进入登录界面，已登录进入购物车界面
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
@@ -84,15 +79,10 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        //展示档口列表
-        for ( int i=shopList.size()-1; i>=0;i--) {
-            shopList.remove(i);
-        }//清空列表
-
+        shopList = app.getShopList();//获取到application内的shop列表
         if (shopList.size() == 0) {
             Toast.makeText(getActivity(), "请刷新", Toast.LENGTH_SHORT).show();
         } else {
-            shopList = homeViewModel.getShopList();
             RecyclerView recyclerView = root.findViewById(R.id.shop_recycler_view);
             GridLayoutManager layoutManager = new GridLayoutManager(MyApplication.getContext(), 1);//第一个参数为Context，第二个参数为列数
             recyclerView.setLayoutManager(layoutManager);
@@ -114,8 +104,6 @@ public class HomeFragment extends Fragment {
     }
 
 
-
-
     //进行本地刷新操作
     private void refreshShops() {
         //先开启一个线程
@@ -124,29 +112,22 @@ public class HomeFragment extends Fragment {
             public void run() {
                 try {
                     OkHttpClient client = new OkHttpClient();
-
                     //生成json文件
                     Request request1 = new Request.Builder()
                             .url("http://49.234.101.49/ordering/shopdata.php")
                             .build();
-
                     //解析对应json文件
                     Request request2 = new Request.Builder()
                             .url("http://49.234.101.49/ordering/json/shopinfo.json")
                             .build();
-
-                    //解析对应json文件
-                    Request request3 = new Request.Builder()
-                            .url("http://49.234.101.49/ordering/json/shopimageinfo.json")
-                            .build();
                     Response response1 = client.newCall(request1).execute();
                     Response response2 = client.newCall(request2).execute();
-                    Response response3 = client.newCall(request3).execute();
+                    //Response response3 = client.newCall(request3).execute();
                     String responseData2 = response2.body().string();
-                    String responseData3 = response3.body().string();
+                    //String responseData3 = response3.body().string();
                     System.out.println(responseData2);
                     parseJSONWithGSON(responseData2);
-                    parseImageJSONWithGSON(responseData3);
+                    //parseImageJSONWithGSON(responseData3);
                     //Thread.sleep(1000);
                 }catch (IOException e){
                     e.printStackTrace();
@@ -155,12 +136,12 @@ public class HomeFragment extends Fragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        initViews();//重新生成数据
 
                         for ( int i=shopList.size()-1; i>=0;i--) {
                             shopList.remove(i);
                         }//清空列表
                         shopList = homeViewModel.getShopList();
+                        app.setShopList(shopList);//设置application的shop列表
                         if (shopList.size() == 0) {
                             Toast.makeText(getActivity(), "请刷新", Toast.LENGTH_SHORT).show();
                         } else {
@@ -190,6 +171,7 @@ public class HomeFragment extends Fragment {
                             adapter.notifyDataSetChanged();//notifyDataSetChanged方法通知数据发生了变化
                         }
                         swipeRefreshLayout.setRefreshing(false);//用于表示刷新事件结束，并隐藏刷新进度条
+
                     }
                 });
             }
@@ -204,12 +186,13 @@ public class HomeFragment extends Fragment {
         }.getType());
         shopDBManager.getDb().delete("shopInfo", null, null);
         for (Shop shop : shopList) {
-            shopDBManager.getDb().execSQL("insert into shopInfo(shopID,shopName,shopLocation,shopBrief,shopImage) values(" + shop.getShopID() + ",'" + shop.getShopName() + "','"
-                    + shop.getShopLocation() + "','" + shop.getShopBrief() + "','" + shop.getShopImage() + "')");
+            shopDBManager.getDb().execSQL("insert into shopInfo values("+shop.getShopID()+",'"+shop.getShopName()+"','"+shop.getShopImage()+
+                    "','"+shop.getShopLocation()+"','"+shop.getShopBrief()+"')");
         }
     }
 
     //图片json格式转换并存入目录
+    /*
     private void parseImageJSONWithGSON(String jsonData) {
         Gson gson = new Gson();
         List<ShopImage> shopImageList = gson.fromJson(jsonData, new TypeToken<List<ShopImage>>() {
@@ -237,6 +220,5 @@ public class HomeFragment extends Fragment {
             filePath = context.getFilesDir().getPath();
         }
         return filePath;
-    }
-
+    }*/
 }

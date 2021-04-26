@@ -19,24 +19,6 @@ public class HomeViewModel extends ViewModel {
 
 
     public HomeViewModel(){
-        /*shopDBManager = new ShopDBManager(MyApplication.getContext());
-        shopDBManager.open();
-        shopDBManager.add();
-        Cursor cursor = shopDBManager.getDb().query("ShopInfo",null,null,null,null,null,null);
-
-        if(cursor.moveToFirst()){
-            do {
-                int shopID = cursor.getInt(cursor.getColumnIndex("shopID"));
-                String shopName = cursor.getString(cursor.getColumnIndex("shopName"));
-                int shopImage = cursor.getInt(cursor.getColumnIndex("shopImage"));
-                String shopLocation = cursor.getString(cursor.getColumnIndex("shopLocation"));
-                String shopBrief = cursor.getString(cursor.getColumnIndex("shopBrief"));
-
-                Shop shop = new Shop(shopID,shopName,shopImage,shopLocation,shopBrief);
-                shopList.add(shop);
-            }while (cursor.moveToNext());
-        }
-        cursor.close();*/
     }
 
     public void refreshList(){

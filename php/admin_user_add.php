@@ -50,14 +50,6 @@ require_once 'imagecompress.php';
                         <li><a href="admin_shop_add.php">增加档口</a></li>
                     </ul>
                 </li>
-				<li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">菜品管理<b class="caret"></b>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a href="admin_dish.php">全部菜品</a></li>
-                        <li><a href="admin_dish_add.php">增加菜品</a></li>
-                    </ul>
-                </li>
                 <li><a href="admin_repass.php">密码修改</a></li>
                 <li><a href="index.php">退出</a></li>
             </ul>
@@ -97,15 +89,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 	}else{
 				//图片压缩
 				$percent = 0.5;
-				$data = (new imgcompress($_FILES["img"]["tmp_name"],$percent))->compressImg($_FILES["img"]["name"]);
-				$imageProperties = getimageSize($_FILES["img"]["tmp_name"]);
-				$imageType = $imageProperties['mime'];
-				$fp    = fopen($_FILES["img"]["name"], 'rb');
-				$image = addslashes(fread($fp, filesize($_FILES["img"]["name"])));
+				//压缩后的图片存入内部目录
+				$imagePath = "image/userPhoto".$userID.".".image_type_to_extension(getimagesize($_FILES["img"]["tmp_name"])[2],false);
+				echo $imagePath;
+
+				(new imgcompress($_FILES["img"]["tmp_name"],$percent))->compressImg($imagePath);
 
 				$sql="select * from userInfo where userID = '{$userID}'";
 				if(mysqli_query($dbc,$sql)->num_rows == 0){
-					$sqla="insert into userInfo(userID,userName,userImage,userTel,userType,imageType) VALUES ({$userID} ,'{$userName}','{$image}','{$userTel}','{$userType}','{$imageType}')";
+					$sqla="insert into userInfo(userID,userName,userImage,userTel,userType) VALUES ({$userID} ,'{$userName}','{$imagePath}','{$userTel}','{$userType}')";
 					$resa=mysqli_query($dbc,$sqla);
 					if($resa==1)
 					{

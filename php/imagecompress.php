@@ -32,7 +32,6 @@ class imgcompress{
        {
               $this->_openImage();
 
-			var_dump($saveName);
               if(!empty($saveName)) $this->_saveImage($saveName);  //保存
               else $this->_showImage();
 			  //return($this->image);
@@ -49,13 +48,16 @@ class imgcompress{
 			  $type = getimagesize($this->src)[2];
 			  $attr = getimagesize($this->src)[3];
 			  
+
+			  
               $this->imageinfo = array(
                      'width'=>$width,
                      'height'=>$height,
                      'type'=>image_type_to_extension($type,false),
                      'attr'=>$attr
               );
-	
+			
+
 			  
               $fun = "imagecreatefrom".$this->imageinfo['type'];
               $this->image = $fun($this->src);
@@ -94,9 +96,11 @@ class imgcompress{
         */
        private function _saveImage($dstImgName)
        {
+			  
               if(empty($dstImgName)) return false;
               $allowImgs = ['.jpg', '.jpeg', '.png', '.bmp', '.wbmp','.gif'];   //如果目标图片名有后缀就用目标图片扩展名 后缀，如果没有，则用源图的扩展名
               $dstExt =  strrchr($dstImgName ,".");
+			  var_dump($this->src);
               $sourseExt = strrchr($this->src ,".");
               if(!empty($dstExt)) $dstExt =strtolower($dstExt);
               if(!empty($sourseExt)) $sourseExt =strtolower($sourseExt);
@@ -107,7 +111,7 @@ class imgcompress{
               }elseif(!empty($sourseExt) && in_array($sourseExt,$allowImgs)){
                      $dstName = $dstImgName.$sourseExt;
               }else{
-                     $dstName = $dstImgName.$this->imageinfo['type'];
+                     $dstName = $dstImgName.".".$this->imageinfo['type'];
               }
               $funcs = "image".$this->imageinfo['type'];
               $funcs($this->image,$dstName);

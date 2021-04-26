@@ -1,11 +1,11 @@
 <?php
 session_start();
 include ('mysqli_connect.php');
-
+require_once 'imagecompress.php';
 
 $shopid=$_GET['id'];
 
-$sqls="select shopName,shopLocation,shopBrief from shopInfo where shopID={$shopid}";
+$sqls="select shopName,shopImage,shopLocation,shopBrief from shopInfo where shopID={$shopid}";
 $ress=mysqli_query($dbc,$sqls);
 $results=mysqli_fetch_array($ress);
 ?>
@@ -55,14 +55,6 @@ $results=mysqli_fetch_array($ress);
                         <li><a href="admin_shop_add.php">增加档口</a></li>
                     </ul>
                 </li>
-				<li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">菜品管理<b class="caret"></b>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a href="admin_dish.php">全部菜品</a></li>
-                        <li><a href="admin_dish_add.php">增加菜品</a></li>
-                    </ul>
-                </li>
                 <li><a href="admin_repass.php">密码修改</a></li>
                 <li><a href="index.php">退出</a></li>
             </ul>
@@ -76,7 +68,7 @@ $results=mysqli_fetch_array($ress);
             <div class="input-group"><span class="input-group-addon">档口名称</span><input value="<?php echo $results['shopName']; ?>" name="shopName" type="text" placeholder="请修改档口名称" class="form-control"></div><br/>
             <div class="input-group"><span class="input-group-addon">档口地址</span><input value="<?php echo $results['shopLocation']; ?>"name="location" type="text" placeholder="请修改档口地址" class="form-control"></div><br/>
             <div class="input-group"><span class="input-group-addon">档口简介</span><input value="<?php echo $results['shopBrief']; ?>"name="brief" type="text" placeholder="请修改档口简介" class="form-control"></div><br/>
-            <div class="input-group"><span class="input-group-addon">档口照片</span><td><img src=http://49.234.101.49/ordering/showImage.php?id=<?php echo $_GET['id']; ?> width='300' /></td>
+            <div class="input-group"><span class="input-group-addon">档口照片</span><td><img src=http://49.234.101.49/ordering/<?php echo $results['shopImage']; ?> width='300' /></td>
 			<input name="img" type="file" class="form-control"></div><br/>
 			
             <label><input type="submit" value="修改" class="btn btn-default"></label>
@@ -94,19 +86,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
     $location = $_POST["location"];
     $brief = $_POST["brief"];
 
-	$data = $_FILES["img"]["tmp_name"];
-
-
-	$fp    = fopen($_FILES['img']['tmp_name'], 'rb');
-	$image = addslashes(fread($fp, filesize($data)));
-
-	$imageProperties = getimageSize($_FILES['img']['tmp_name']);
-
-	$imageType = $imageProperties['mime'];
+	//图片压缩
+	$percent = 0.5;
+	//压缩后的图片存入内部目录
+	$imagePath = "image/userPhoto".$userID.".".image_type_to_extension(getimagesize($_FILES["img"]["tmp_name"])[2],false);
+	echo $imagePath;
+	(new imgcompress($_FILES["img"]["tmp_name"],$percent))->compressImg($imagePath);
  
-	$sqlstr = "update shopInfo set shopImage ='".$image."' , imageType ='".$imageType."'";
 
-	$sqla="update shopInfo set shopName='{$shopName}',shopImage='{$image}',shopLocation='{$location}',shopBrief='{$brief}',imageType='{$imageType}' where shopID=$shopid;";
+	$sqla="update shopInfo set shopName='{$shopName}',shopImage='{$imagePath}',shopLocation='{$location}',shopBrief='{$brief}' where shopID=$shopid;";
     $resa=mysqli_query($dbc,$sqla);
 
 if($resa==1)

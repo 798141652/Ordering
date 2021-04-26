@@ -78,7 +78,7 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.ViewHolder> {
         //然后调用load()方法去加载图片，可以是一个URL地址，也可以是一个本地路径，或者是一个资源id
         //最后调用into()方法将图片设置到具体某一个ImageView中就可以了
         Glide.with(mContext).
-                load(shop.getShopImage())
+                load("http://49.234.101.49/ordering/"+shop.getShopImage())
                 .placeholder(R.drawable.loading)
                 .into(holder.shopImage);
     }

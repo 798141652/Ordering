@@ -15,8 +15,17 @@ include ('mysqli_connect.php');
 
 $delis=$_GET['id'];
 
-    $sql = "delete  from shopInfo where shopID={$delis} ;";
+	//删除数据的同时删除服务器照片
+	$sql = "select shopImage from shopInfo where shopID={$delis} ;";
+	$row = (mysqli_query($dbc, $sql))->fetch_assoc();
+	if(file_exists($row['shopImage'])){
+		unlink($row['shopImage']);
+	}
+	
+    $sql = "delete from shopInfo where shopID={$delis} ;";
     $res = mysqli_query($dbc, $sql);
+	
+	
 
     if ($res == 1) {
         echo "<script>alert('删除成功！')</script>";

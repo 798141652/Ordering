@@ -89,8 +89,6 @@ public class LoginActivity extends AppCompatActivity {
                     // 修改状态
                     app.setLoginstatus(true);
                     app.setUid(userID);
-
-
                     // 跳转
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     setResult(RESULT_OK, intent);

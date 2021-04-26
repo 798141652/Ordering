@@ -57,14 +57,6 @@ $results=mysqli_fetch_array($ress);
                         <li><a href="admin_user_add.php">增加档口</a></li>
                     </ul>
                 </li>
-				<li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">菜品管理<b class="caret"></b>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a href="admin_dish.php">全部菜品</a></li>
-                        <li><a href="admin_dish_add.php">增加菜品</a></li>
-                    </ul>
-                </li>
                 <li><a href="admin_repass.php">密码修改</a></li>
                 <li><a href="index.php">退出</a></li>
             </ul>
@@ -77,7 +69,7 @@ $results=mysqli_fetch_array($ress);
         <div id="login">
             <div class="input-group"><span class="input-group-addon">用户名称</span><input value="<?php echo $results['userName']; ?>"name="userName" type="text" placeholder="请修改用户名称" class="form-control"></div><br/>
             <div class="input-group"><span class="input-group-addon">用户电话</span><input value="<?php echo $results['userTel']; ?>"name="userTel" type="text" placeholder="请修改用户电话" class="form-control"></div><br/>
-            <div class="input-group"><span class="input-group-addon">用户照片</span><td><img src=http://49.234.101.49/ordering/showUserImage.php?id=<?php echo $_GET['id']; ?> width='300' /></td>
+            <div class="input-group"><span class="input-group-addon">用户照片</span><td><img src=http://49.234.101.49/ordering/<?php echo $results['userImage']; ?> width='300' /></td>
 			<input name="img" type="file" class="form-control"></div><br/>
 			
             <label><input type="submit" value="修改" class="btn btn-default"></label>
@@ -94,19 +86,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
     $userName = $_POST["userName"];
     $userTel = $_POST["userTel"];
 	
-	$data = $_FILES["img"]["tmp_name"];
+	//图片压缩
+	$percent = 0.5;
+	//压缩后的图片存入内部目录
+	$imagePath = "image/userPhoto".$userID.".".image_type_to_extension(getimagesize($_FILES["img"]["tmp_name"])[2],false);
+	echo $imagePath;
 
-
-	$fp    = fopen($_FILES['img']['tmp_name'], 'rb');
-	$image = addslashes(fread($fp, filesize($data)));
-
-	$imageProperties = getimageSize($_FILES['img']['tmp_name']);
-
-	$imageType = $imageProperties['mime'];
+	(new imgcompress($_FILES["img"]["tmp_name"],$percent))->compressImg($imagePath);
  
-	$sqlstr = "update userInfo set userImage ='".$image."' , imageType ='".$imageType."'";
-
-	$sqla="update userInfo set userName='{$userName}',userImage='{$image}',userTel='{$userTel}',imageType='{$imageType}' where userID=$userid;";
+	$sqla="update userInfo set userName='{$userName}',userImage='{$imagePath}',userTel='{$userTel}' where userID=$userid;";
     $resa=mysqli_query($dbc,$sqla);
 
 if($resa==1)

@@ -49,14 +49,6 @@ include ('mysqli_connect.php');
                         <li><a href="admin_shop_add.php">增加档口</a></li>
                     </ul>
                 </li>
-				<li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">菜品管理<b class="caret"></b>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a href="admin_dish.php">全部菜品</a></li>
-                        <li><a href="admin_dish_add.php">增加菜品</a></li>
-                    </ul>
-                </li>
                 <li><a href="admin_repass.php">密码修改</a></li>
                 <li><a href="index.php">退出</a></li>
             </ul>
@@ -91,7 +83,7 @@ include ('mysqli_connect.php');
         echo "<tr>";
         echo "<td>{$row['userID']}</td>";
         echo "<td>{$row['userName']}</td>";
-        echo "<td><img src=http://49.234.101.49/ordering/showUserImage.php?id={$row['userID']} width='70' /></td>";
+        echo "<td><img src=http://49.234.101.49/ordering/{$row['userImage']} width='70' /></td>";
         echo "<td>{$row['userTel']}</td>";
         echo "<td><a href='admin_user_edit.php?id={$row['userID']}'>修改</a></td>";
         echo "<td><a href='admin_user_del.php?id={$row['userID']}'>删除</a></td>";

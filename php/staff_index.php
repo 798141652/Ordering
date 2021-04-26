@@ -32,25 +32,19 @@ include ('mysqli_connect.php');
         </div>
         <div>
             <ul class="nav navbar-nav">
-                <li class="active"><a href="admin_index.php">主页</a></li>
-                <li  class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">用户管理<b class="caret"></b>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a href="admin_user.php">所有用户</a></li>
-                        <li><a href="admin_user_add.php">增加用户</a></li>
-
-                    </ul>
-                </li>
+                <li class="active"><a href="staff_index.php">主页</a></li>
+                <li><a href="staff_shop.php">档口管理</a></li>
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">档口管理<b class="caret"></b>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">菜品管理<b class="caret"></b>
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a href="admin_shop.php">全部档口</a></li>
-                        <li><a href="admin_shop_add.php">增加档口</a></li>
+                        <li><a href="staff_dish.php">全部菜品</a></li>
+                        <li><a href="staff_dish_add.php">增加菜品</a></li>
                     </ul>
                 </li>
-                <li><a href="admin_repass.php">密码修改</a></li>
+				<li><a href="order_manage.php">订单管理</a></li>
+				<li><a href="show_comment.php">查看评论</a></li>
+                <li><a href="staff_repass.php">密码修改</a></li>
                 <li><a href="index.php">退出</a></li>
             </ul>
         </div>
@@ -58,7 +52,7 @@ include ('mysqli_connect.php');
 </nav>
 
 
-<h3 style="text-align: center"><?php echo $userid;  ?>号管理员，您好</h3><br/><br/><br/>
+<h3 style="text-align: center"><?php echo $userid;  ?>号档口管理员，您好</h3><br/><br/><br/>
 <h4 style="text-align: center"><?php
     $sql="select count(*) a from shopInfo;";
 

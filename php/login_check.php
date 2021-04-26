@@ -14,13 +14,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $acco = $_POST["account"];
     $pw = $_POST["pass"];
 }
-$adsql="select * from userInfo where userID={$acco} and userPwd='{$pw}' and userType='1'";
+$adsql="select * from staffInfo where userID={$acco} and userPwd='{$pw}' and userType=1";
 $adres=mysqli_query($dbc,$adsql);
+echo "hhhh";
+var_dump($adres);
 
-
-$resql="select * from userInfo where userID={$acco} and userPwd='{$pw}' and userType='2'";
+$resql="select * from staffInfo where userID={$acco} and userPwd='{$pw}' and userType=2";
 $reres=mysqli_query($dbc,$resql);
-
+var_dump($reres);
 
 if(mysqli_num_rows($adres)==1 ){
     session_start();

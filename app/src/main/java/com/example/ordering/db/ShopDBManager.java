@@ -3,21 +3,6 @@ package com.example.ordering.db;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.os.Environment;
-
-import com.example.ordering.Base64Tool;
-import com.example.ordering.R;
-import com.example.ordering.structure.MyApplication;
-import com.example.ordering.structure.Shop;
-import com.example.ordering.structure.ShopImage;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
-import java.util.List;
-
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 public class ShopDBManager {
 

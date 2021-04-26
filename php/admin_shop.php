@@ -48,14 +48,6 @@ include ('mysqli_connect.php');
                         <li><a href="admin_shop_add.php">增加档口</a></li>
                     </ul>
                 </li>
-				<li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">菜品管理<b class="caret"></b>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a href="admin_dish.php">全部菜品</a></li>
-                        <li><a href="admin_dish_add.php">增加菜品</a></li>
-                    </ul>
-                </li>
                 <li><a href="admin_repass.php">密码修改</a></li>
                 <li><a href="index.php">退出</a></li>
             </ul>
@@ -82,7 +74,7 @@ include ('mysqli_connect.php');
     </tr>
     <?php
     $gjc = $_POST["shopquery"];
-    $sql="select shopID,shopName,shopImage,shopLocation,shopBrief,imageType from shopInfo where shopName like '%{$gjc}%';";
+    $sql="select shopID,shopName,shopImage,shopLocation,shopBrief from shopInfo where shopName like '%{$gjc}%';";
 	
 	
     $res=mysqli_query($dbc,$sql);
@@ -91,7 +83,7 @@ include ('mysqli_connect.php');
         echo "<td>{$row['shopID']}</td>";
         echo "<td>{$row['shopName']}</td>";
 		
-        echo "<td><img src=http://49.234.101.49/ordering/showImage.php?id={$row['shopID']} width='70' /></td>";
+        echo "<td><img src=http://49.234.101.49/ordering/{$row['shopImage']} width='70' /></td>";
 		
         echo "<td>{$row['shopLocation']}</td>";
         echo "<td>{$row['shopBrief']}</td>";

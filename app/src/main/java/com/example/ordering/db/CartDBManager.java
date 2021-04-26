@@ -20,6 +20,7 @@ public class CartDBManager {
     public static final String CART_DISH_PRICE = "dishPrice";
     public static final String CART_PRICE = "cartPrice";
     public static final String CART_STATUS = "cartStatus";
+    public static final String CART_TIME = "cartTime";
     private final Context context;
     private SQLiteDatabase db;
     private DBHelper dbhelper;
@@ -133,5 +134,4 @@ public class CartDBManager {
         System.out.println("userId = "+userID+"\ndishID = "+dishID+"\nnum = "+sdishnum);
         return db.update(CART_TABLE, cv, CART_UID + "='" + userID + "'and " + CART_DISH_ID + "='" + dishID + "'" + CART_STATUS + "= '0'", null);
     }
-
 }

@@ -3,13 +3,26 @@ package com.example.ordering.structure;
 import android.app.Application;
 import android.content.Context;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MyApplication extends Application {
 
     private static Context context;
 
+    private List<Shop> shopList = new ArrayList<>();
+
     public int state;
     public Boolean loginstatus = false;
     public String uid;
+
+    public List<Shop> getShopList() {
+        return shopList;
+    }
+
+    public void setShopList(List<Shop> shopList) {
+        this.shopList = shopList;
+    }
 
     public int getState() {
         return this.state;

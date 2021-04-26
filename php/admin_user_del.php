@@ -14,6 +14,13 @@ include ('mysqli_connect.php');
 
 $delis=$_GET['id'];
 
+//删除数据的同时删除服务器照片
+	$sql = "select userImage from shopInfo where shopID={$delis} ;";
+	$row = (mysqli_query($dbc, $sql))->fetch_assoc();
+	if(file_exists($row['userImage'])){
+		unlink($row['userImage']);
+	}
+
     $sql = "delete  from userInfo where userID={$delis} ;";
     $res = mysqli_query($dbc, $sql);
 

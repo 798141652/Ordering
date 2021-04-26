@@ -2,7 +2,7 @@
 session_start();
 $userid=$_SESSION['userid'];
 include ('mysqli_connect.php');
-
+require_once 'imagecompress.php';
 ?>
 
 <!DOCTYPE html>
@@ -88,20 +88,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
     $location = $_POST["location"];
     $brief = $_POST["brief"];
 	
+	//由于id自增，所以先插入除了id以及image外的数据
+	$sqla="insert into shopInfo VALUES (NULL ,'{$shopName}',NULL,'{$location}','{$brief}')";
+	$resa=mysqli_query($dbc,$sqla);
+	$shopID=mysqli_insert_id($dbc);
+		
 	
-	$data = $_FILES["img"]["tmp_name"];
-	//var_dump ($data);
-	$imageProperties = getimageSize($data);
-	$imageType = $imageProperties['mime'];
-	$fp    = fopen($_FILES['img']['tmp_name'], 'rb');
-	$image = addslashes(fread($fp, filesize($data)));
-	
-	var_dump($image);
-	
-	//var_dump($image);
- 
-    $sqla="insert into shopInfo VALUES (NULL ,'{$shopName}','{$image}','{$imageType}','{$location}','{$brief}')";
-    $resa=mysqli_query($dbc,$sqla);
+	//图片压缩
+	$percent = 0.3;
+	//压缩后的图片存入内部目录
+	$imagePath = "image/shopPhoto".$shopID.".".image_type_to_extension(getimagesize($_FILES["img"]["tmp_name"])[2],false);
+	echo $imagePath;
+	(new imgcompress($_FILES["img"]["tmp_name"],$percent))->compressImg($imagePath);
+	$sqla="update shopInfo set shopImage = '{$imagePath}' where shopID = {$shopID}";
+	$resa=mysqli_query($dbc,$sqla);
+    
+
 
     if($resa==1)
     {
