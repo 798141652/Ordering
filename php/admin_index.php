@@ -1,6 +1,11 @@
 <?php
 session_start();
+var_dump($_SESSION);
 $userid=$_SESSION['userid'];
+if(!isset($userid)){
+	 echo "<script>alert('身份信息过期！请重新登录！');</script>";
+	 echo "<script>window.location.href='index.php'</script>";
+}
 include ('mysqli_connect.php');
 
 ?>
@@ -33,16 +38,17 @@ include ('mysqli_connect.php');
         <div>
             <ul class="nav navbar-nav">
                 <li class="active"><a href="admin_index.php">主页</a></li>
-                <li  class="dropdown">
+                <li   class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">用户管理<b class="caret"></b>
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a href="admin_user.php">所有用户</a></li>
+                        <li><a href="admin_staffuser.php">档口管理员用户</a></li>
+						<li><a href="admin_user.php">普通用户</a></li>
                         <li><a href="admin_user_add.php">增加用户</a></li>
 
                     </ul>
                 </li>
-                <li class="dropdown">
+                <li  class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">档口管理<b class="caret"></b>
                     </a>
                     <ul class="dropdown-menu">

@@ -4,6 +4,8 @@ public class Shop {
     public String shopName,shopLocation,shopBrief,shopImage;
     public int shopID;
 
+    public Shop(){};
+
     public Shop( int shopID,String shopName, String shopImage, String shopLocation, String shopBrief) {
         this.shopName = shopName;
         this.shopImage = shopImage;

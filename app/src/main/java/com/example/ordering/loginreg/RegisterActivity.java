@@ -21,6 +21,8 @@ import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -57,7 +59,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     private EditText et_password;
     private EditText et_confirm;
     private ImageView iv_headPhoto;
-    private ImageView user_image;
+    private ImageView login_image;
     private Button select_image;
     private Button take_image;
     private Button btn_takePhoto;
@@ -83,11 +85,18 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Window window = getWindow();
+        //设置修改状态栏
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        //设置状态栏的颜色，和你的APP主题或者标题栏颜色一致就可以了
+        window.setStatusBarColor(getResources().getColor(R.color.toolbarblue));
+
         setContentView(R.layout.activity_register);
         res = getResources();
         //获取布局中的各组件
         tv_note = findViewById(R.id.reg_note);
-        user_image = findViewById(R.id.user_image);
+        login_image = findViewById(R.id.login_image);
         select_image = findViewById(R.id.select_image);
         take_image = findViewById(R.id.take_image);
         et_userID = findViewById(R.id.reg_userID);
@@ -226,7 +235,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 if(ContextCompat.checkSelfPermission(RegisterActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
                     ActivityCompat.requestPermissions(RegisterActivity.this,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},1);
                 }else {
-                //    openAlbum();
+                    openAlbum();
                 }
                 break;
             }
@@ -274,7 +283,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                                 imageUri = ContentUris.withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,cursor.getLong(0));
                                 InputStream inputStream = getContentResolver().openInputStream(imageUri);
                                 Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-                                user_image.setImageBitmap(bitmap);
+                                login_image.setImageBitmap(bitmap);
                             }while (cursor.moveToNext());
                         }else {
                             Toast.makeText(this,"no photo",Toast.LENGTH_SHORT).show();
@@ -344,7 +353,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             Log.d("MainPhoto",imagePath);
             Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
             Log.d("MainPhoto",String.valueOf(bitmap));
-            user_image.setImageBitmap(bitmap);
+            login_image.setImageBitmap(bitmap);
         }else {
             Toast.makeText(this,"failed to get image",Toast.LENGTH_SHORT).show();
         }

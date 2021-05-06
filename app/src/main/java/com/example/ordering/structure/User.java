@@ -1,7 +1,7 @@
 package com.example.ordering.structure;
 
 public class User {
-    public String userID,userName,userPwd,userTel,userImage,userType;
+    public String userID,userName,userPwd,userTel,userImage;
 
     public String getUserID() {
         return userID;
@@ -43,11 +43,4 @@ public class User {
         this.userImage = userImage;
     }
 
-    public String getUserType() {
-        return userType;
-    }
-
-    public void setUserType(String userType) {
-        this.userType = userType;
-    }
 }

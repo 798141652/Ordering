@@ -12,6 +12,7 @@
         android:id="@+id/appBar"
         android:layout_width="match_parent"
         android:layout_height="250dp"
+        android:background="#3397e4"
         android:fitsSystemWindows="true">
 
         <!--在AppBarLayout中嵌套一个CollapsingToolbarLayout可折叠标题栏
@@ -28,7 +29,7 @@
             android:layout_height="match_parent"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             android:fitsSystemWindows="true"
-            app:contentScrim="?attr/colorPrimary"
+            app:contentScrim="#3397e4"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
             <ImageView
@@ -65,7 +66,8 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
@@ -75,26 +77,73 @@
                 android:layout_marginRight="15dp"
                 android:layout_marginTop="35dp"
                 app:cardCornerRadius="4dp"><!--layout_marginTop加35dp的边距，是为下面要写的东西留出空间-->
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
-                <TextView
-                    android:id="@+id/show_dish_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="30sp"
-                    android:layout_margin="20dp"
-                    android:textColor="#000"/>
+                    android:layout_height="150dp">
 
-                <TextView
-                    android:id="@+id/dish_brief"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="20sp"/>
+                    <TextView
+                        android:id="@+id/show_dish_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="5dp"
+                        android:textColor="#000"
+                        android:textSize="30sp" />
 
-                </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/dish_brief"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/show_dish_name"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="13dp"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/dish_brief"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="19dp"
+                        android:text="￥"
+                        android:textColor="#cc0000"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/show_dish_price"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/dish_brief"
+                        android:layout_marginLeft="30dp"
+                        android:layout_marginTop="5dp"
+                        android:textColor="#cc0000"
+                        android:textSize="30sp" />
+
+                    <ImageView
+                        android:id="@+id/dish_add"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginEnd="15dp"
+                        android:layout_marginBottom="13dp"
+                        android:src="@drawable/add"
+                        android:tint="#3397e4" />
+
+                </RelativeLayout>
             </androidx.cardview.widget.CardView>
+
+
+
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/dish_comment_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+
         </LinearLayout>
 
         <!--悬浮按钮控件 layout_gravity属性start表示放置位置为从系统语言角度看的开头，本例为右下角
@@ -112,6 +161,7 @@
         android:layout_margin="16dp"
         android:src="@drawable/cart"
         app:layout_anchor="@id/dish_list"
+        app:backgroundTint="#61afea"
         app:layout_anchorGravity="bottom|end"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

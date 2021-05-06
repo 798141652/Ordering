@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?><!--卡片式布局-->
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="10dp"
+    android:layout_marginRight="10dp"
+    android:layout_marginLeft="10dp"
+    app:cardCornerRadius="5dp"
+    app:cardElevation="0px"
+    app:cardUseCompatPadding="false"
+    app:contentPadding="10dp"
+    >
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:id="@+id/cart_shop"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/cart_shop_image"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:scaleType="centerInside" />
+
+            <TextView
+                android:id="@+id/cart_shop_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/cart_shop_image"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:textSize="16sp" />
+            <TextView
+                android:id="@+id/cart_shop_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_toRightOf="@+id/cart_shop_name"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="14dp"
+                android:textSize="10sp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/cart_dish_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            </androidx.recyclerview.widget.RecyclerView>
+
+
+            <TextView
+                android:id="@+id/cart_total_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/cart_dish_list"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_toLeftOf="@+id/cart_button"
+                android:textColor="#000"
+                android:textSize="20sp" />
+
+            <Button
+                android:id="@+id/cart_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/cart_dish_list"
+                android:layout_alignParentRight="true"
+                android:backgroundTint="#3397e4"
+                android:text="去结算" />
+
+        </RelativeLayout>
+    </LinearLayout>
+
+
+</androidx.cardview.widget.CardView>

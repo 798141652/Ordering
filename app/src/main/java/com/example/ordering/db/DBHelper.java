@@ -42,10 +42,10 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String UKEY = "userPwd";
     public static final String PHONE = "userTel";
     public static final String IMAGE = "userImage";
-    public static final String TYPE = "userType";
 
-    public static final String CART_TABLE = "userCart";
+    public static final String CART_TABLE = "cartInfo";
     public static final String CART_UID = "userID";
+    public static final String CART_ORDER_ID = "orderID";
     public static final String CART_ID = "cartID";
     public static final String CART_DISH_SHOP = "dishShop";
     public static final String CART_DISH_ID = "dishID";
@@ -54,15 +54,18 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String CART_DISH_PRICE = "dishPrice";
     public static final String CART_PRICE = "cartPrice";
     public static final String CART_STATUS = "cartStatus";
+    public static final String CART_TIME = "cartTime";
 
-    public static final String ORDER_TABLE = "userOrder";
-    public static final String ORDER_UID = "userID";
-    public static final String ORDER_ID = "CartID";
-    public static final String ORDER_DISH_ID = "dishID";
-    public static final String ORDER_DISH_NAME = "dishName";
-    public static final String ORDER_DISH_NUM = "dishNum";
-    public static final String ORDER_DISH_PRICE = "cartPrice";
-    public static final String ORDER_STATUS = "cartStatus";
+    public static final String COMMENT_TABLE = "commentInfo";
+    public static final String COMMENT_ID = "commentID";
+    public static final String COMMENT_UID = "userID";
+    public static final String COMMENT_SID = "shopID";
+    public static final String COMMENT_OID = "orderID";
+    public static final String COMMENT_DID = "dishID";
+    public static final String COMMENT_TYPE = "commentType";
+    public static final String COMMENT = "comment";
+    public static final String COMMENT_TIME = "commentTime";
+
 
 
     public DBHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
@@ -73,7 +76,6 @@ public class DBHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + SHOP_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + DISH_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + ORDER_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + USER_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + CART_TABLE);
         onCreate(db);
@@ -81,6 +83,9 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+
+
+
         //db.execSQL("DROP TABLE IF EXISTS " + SHOP_TABLE);
         String sql = "create table if not exists " + SHOP_TABLE + "(" + SHOP_ID + " integer primary key," +
                 SHOP_NAME + " text," + SHOP_IMAGE + " text," + SHOP_LOC + " text,"  + SHOP_BRI + " text);";
@@ -88,21 +93,46 @@ public class DBHelper extends SQLiteOpenHelper {
 
         //db.execSQL("DROP TABLE IF EXISTS " + DISH_TABLE);
         sql = "create table if not exists " + DISH_TABLE + "(" + DISH_ID + " integer primary key," +
-                DISH_SHOP_ID + " integer," + DISH_NAME + " text,"  + DISH_IMAGE + " integer,"+
+                DISH_SHOP_ID + " integer," + DISH_NAME + " text,"  + DISH_IMAGE + " text,"+
                 DISH_PRICE + " float, " + DISH_TYPE + " text);";
         db.execSQL(sql);
 
         //db.execSQL("DROP TABLE IF EXISTS " + USER_TABLE);
         sql = "create table if not exists " + USER_TABLE + "(" + UID + " integer primary key," +
-                NAME + " text," + UKEY + " text,"   + PHONE + " text," + IMAGE + " integer,"
-                + TYPE + " text);";
+                NAME + " text," + UKEY + " text,"   + PHONE + " text," + IMAGE + " text);";
         db.execSQL(sql);
 
         //db.execSQL("DROP TABLE IF EXISTS " + CART_TABLE);
-        sql = "create table " + CART_TABLE + "(" + CART_ID + " integer primary key," +
-                CART_UID + " integer," + CART_DISH_ID + " text," + CART_DISH_SHOP+" integer, "+CART_DISH_NAME + " text, " +
-                CART_DISH_NUM + " integer, " + CART_DISH_PRICE + " float," + CART_STATUS + " text );";
+        sql = "create table " + CART_TABLE + "(" + CART_ID + " integer primary key AUTOINCREMENT," +CART_ORDER_ID+" text,"+
+                CART_UID + " integer," + CART_DISH_ID + " integer," + CART_DISH_SHOP+" integer, "+CART_DISH_NAME + " text, " +
+                CART_DISH_NUM + " integer, " + CART_DISH_PRICE + " float,"+ CART_PRICE + " float default 0," + CART_STATUS + " text ," +
+                CART_TIME + " text);";
         db.execSQL(sql);
+
+        //db.execSQL("DROP TABLE IF EXISTS " + COMMENT_TABLE);
+        sql = "create table " + COMMENT_TABLE + "(" + COMMENT_ID + " integer primary key AUTOINCREMENT," +
+                COMMENT_UID + " integer," + COMMENT_OID + " integer,"+COMMENT_SID+" integer, " +COMMENT_DID+" integer, "+ COMMENT_TYPE+" text, "+COMMENT
+                + " text, "+COMMENT_TIME+" text);";
+        db.execSQL(sql);
+
+        db.execSQL("delete from shopInfo");
+        db.execSQL("update sqlite_sequence set seq=0 where name='shopInfo'");
+
+        db.execSQL("delete from dishInfo");
+        db.execSQL("update sqlite_sequence set seq=0 where name='dishInfo'");
+
+        db.execSQL("delete from userInfo");
+        db.execSQL("update sqlite_sequence set seq=0 where name='userInfo'");
+
+        db.execSQL("delete from cartInfo");
+        db.execSQL("update sqlite_sequence set seq=0 where name='cartInfo'");
+
+        db.execSQL("delete from commentInfo");
+        db.execSQL("update sqlite_sequence set seq=0 where name='commentInfo'");
     }
 
+    @Override
+    public synchronized void close() {
+        super.close();
+    }
 }

@@ -1,10 +1,14 @@
 <?php
 session_start();
+var_dump($_SESSION);
 include ('mysqli_connect.php');
 require_once 'imagecompress.php';
-
 $shopid=$_GET['id'];
-
+$userid=$_SESSION['userid'];
+if(!isset($userid)){
+	 echo "<script>alert('身份信息过期！请重新登录！');</script>";
+	 echo "<script>window.location.href='index.php'</script>";
+}
 $sqls="select shopName,shopImage,shopLocation,shopBrief from shopInfo where shopID={$shopid}";
 $ress=mysqli_query($dbc,$sqls);
 $results=mysqli_fetch_array($ress);
@@ -86,18 +90,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
     $location = $_POST["location"];
     $brief = $_POST["brief"];
 
-	//图片压缩
-	$percent = 0.5;
-	//压缩后的图片存入内部目录
-	$imagePath = "image/userPhoto".$userID.".".image_type_to_extension(getimagesize($_FILES["img"]["tmp_name"])[2],false);
-	echo $imagePath;
-	(new imgcompress($_FILES["img"]["tmp_name"],$percent))->compressImg($imagePath);
+	if(empty($_FILES["img"]["tmp_name"])){
+		$imagePath = "image/defaultimage.jpeg";
+	}
+	else{
+		//图片压缩
+		$percent = 0.5;
+		//压缩后的图片存入内部目录
+		$imagePath = "image/shopPhoto".$shopID.".".image_type_to_extension(getimagesize($_FILES["img"]["tmp_name"])[2],false);
+		echo $imagePath;
+		if(file_exists($imagePath)){
+		unlink($imagePath);
+	}
+		(new imgcompress($_FILES["img"]["tmp_name"],$percent))->compressImg($imagePath);
+	}
  
 
-	$sqla="update shopInfo set shopName='{$shopName}',shopImage='{$imagePath}',shopLocation='{$location}',shopBrief='{$brief}' where shopID=$shopid;";
+	$sqla="update shopInfo set shopName='{$shopName}',shopImage='{$imagePath}',shopLocation='{$location}',shopBrief='{$brief}' where shopID=$shopID;";
     $resa=mysqli_query($dbc,$sqla);
 
-if($resa==1)
+	if($resa==1)
     {
 
         echo "<script>alert('修改成功！')</script>";
@@ -110,7 +122,6 @@ if($resa==1)
 
     }
 mysqli_close($dbc);
-
 }
 
 

@@ -2,11 +2,11 @@ package com.example.ordering.structure;
 
 public class Dish {
 
-    public String dishName,dishType;
-    public int shopID,dishID,dishImage;
+    public String dishName,dishType,dishImage;
+    public int shopID,dishID;
     public double dishPrice;
 
-    public Dish(String dishName, String dishType, int shopID, int dishID, int dishImage, double dishPrice) {
+    public Dish(String dishName, String dishType, int shopID, int dishID, String dishImage, double dishPrice) {
         this.dishName = dishName;
         this.dishType = dishType;
         this.shopID = shopID;
@@ -14,6 +14,8 @@ public class Dish {
         this.dishImage = dishImage;
         this.dishPrice = dishPrice;
     }
+
+    public Dish(){};
 
     public String getDishName() {
         return dishName;
@@ -47,11 +49,11 @@ public class Dish {
         this.dishID = dishID;
     }
 
-    public int getDishImage() {
+    public String getDishImage() {
         return dishImage;
     }
 
-    public void setDishImage(int dishImage) {
+    public void setDishImage(String dishImage) {
         this.dishImage = dishImage;
     }
 

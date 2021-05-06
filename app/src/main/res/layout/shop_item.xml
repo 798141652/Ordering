@@ -5,27 +5,29 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="5dp"
-    app:cardCornerRadius="4dp">
+    app:cardCornerRadius="10dp"
+    app:cardElevation="0dp">
 
-    <LinearLayout
-        android:orientation="horizontal"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/shop_image"
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
             android:layout_height="100dp"
+            android:layout_marginLeft="10dp"
             android:scaleType="centerInside"/>
 
         <TextView
             android:id="@+id/shop_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginTop="0dp"
-            android:layout_marginStart="100dp"
-            android:textSize="16sp"/>
-    </LinearLayout>
+            android:layout_toRightOf="@+id/shop_image"
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="30dp"
+            android:textSize="18sp"
+            android:textColor="#000"/>
+    </RelativeLayout>
 
 </androidx.cardview.widget.CardView>

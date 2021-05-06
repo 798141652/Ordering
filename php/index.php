@@ -1,5 +1,6 @@
 <?php
 session_start();
+var_dump($_SESSION);
 if(isset($_SESSION['userid']))
 {
     unset($_SESSION['userid']);
@@ -26,7 +27,7 @@ if(isset($_SESSION['userid']))
 
 </head>
 <body>
-<h1 style="text-align: center"><strong>Ordering点餐后台系统登陆</strong></h1>
+<h1 style="text-align: center;color: #000"><strong>Ordering点餐后台系统登陆</strong></h1>
 <div style="padding: 180px 550px 10px;text-align: center">
     <form  action="login_check.php" method="POST" class="bs-example bs-example-form" role="form">
         <div id="login">

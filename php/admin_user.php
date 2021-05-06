@@ -1,5 +1,11 @@
 <?php
 session_start();
+var_dump($_SESSION);
+$userid=$_SESSION['userid'];
+if(!isset($userid)){
+	 echo "<script>alert('身份信息过期！请重新登录！');</script>";
+	 echo "<script>window.location.href='index.php'</script>";
+}
 include ('mysqli_connect.php');
 
 ?>
@@ -74,7 +80,7 @@ include ('mysqli_connect.php');
     </tr>
     <?php
     $gjc = $_POST["userquery"];
-    $sql="select userID,userName,userTel,userImage from userInfo where userType = '3' and userName like '%{$gjc}%';";
+    $sql="select userID,userName,userTel,userImage from userInfo where userName like '%{$gjc}%';";
 	
 	
     $res=mysqli_query($dbc,$sql);

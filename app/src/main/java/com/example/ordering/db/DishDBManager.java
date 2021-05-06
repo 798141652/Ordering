@@ -1,6 +1,7 @@
 package com.example.ordering.db;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.example.ordering.R;
@@ -44,32 +45,6 @@ public class DishDBManager {
         } catch (Exception e) {
             db = dbhelper.getReadableDatabase();
         }
-
-        //获取服务器数据
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try{
-                    OkHttpClient client = new OkHttpClient();
-
-                    //生成json文件
-                    Request request1 = new Request.Builder()
-                            .url("http://49.234.101.49/ordering/dishdata.php")
-                            .build();
-                    //解析对应json文件
-                    Request request2 = new Request.Builder()
-                            .url("http://49.234.101.49/ordering/json/dishinfo.json")
-                            .build();
-                    Response response1 = client.newCall(request1).execute();
-                    Response response2 = client.newCall(request2).execute();
-                    String responseData = response2.body().string();
-                    parseJSONWithGSON(responseData);
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-            }
-        }).start();
-
     }
 
     public SQLiteDatabase getDb(){
@@ -85,5 +60,40 @@ public class DishDBManager {
             db.execSQL("insert into dishInfo(dishID,shopID,dishName,dishImage,dishPrice,dishType) values("+dish.getDishID()+","+dish.getShopID()+",'"
                   +dish.getDishName()+"','"+dish.getDishImage()+"',"+ dish.getDishPrice()+",'"+dish.getDishType()+"')");
         }
+    }
+
+    public String getDishImageByID(int dishID){
+        Cursor cursor = db.rawQuery("select dishImage from dishInfo where dishId = "+dishID,null);
+        int count = cursor.getCount();
+        if (count == 0 || !cursor.moveToFirst()) {
+            System.out.println("数据表中没有数据");
+            return null;
+        } else {
+            return cursor.getString(cursor.getColumnIndex("dishImage"));
+        }
+    }
+
+    public Dish getDishByID(int dishID){
+        Cursor cursor = db.rawQuery("select * from dishInfo where dishId = "+dishID,null);
+        int count = cursor.getCount();
+        if (count == 0 || !cursor.moveToFirst()) {
+            System.out.println("数据表中没有数据");
+            return null;
+        } else {
+            Dish dish = new Dish();
+            dish.dishID = cursor.getInt(cursor.getColumnIndex("dishID"));
+            dish.dishName = cursor.getString(cursor.getColumnIndex("dishName"));
+            dish.dishImage = cursor.getString(cursor.getColumnIndex("dishImage"));
+            dish.shopID = cursor.getInt(cursor.getColumnIndex("shopID"));
+            dish.dishPrice = cursor.getDouble(cursor.getColumnIndex("dishPrice"));
+            dish.dishType = cursor.getString(cursor.getColumnIndex("dishType"));
+            return dish;
+        }
+    }
+
+    //删除菜品表信息
+    public void deleteDishInfo() {
+        db.execSQL("delete from dishInfo");
+        db.execSQL("update sqlite_sequence set seq=0 where name='dishInfo'");
     }
 }

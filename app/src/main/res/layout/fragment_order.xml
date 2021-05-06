@@ -4,66 +4,42 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.dashboard.DashboardFragment">
+    android:background="#f2f2f2"
 
-        <!--是一个加强版的FrameLayout，可以监听所有子控件的各种事件，此控件可以解决SnackBar遮挡悬浮按钮的问题-->
-        <androidx.coordinatorlayout.widget.CoordinatorLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+    tools:context=".ui.order.OrderFragment">
+    <!--是一个加强版的FrameLayout，可以监听所有子控件的各种事件，此控件可以解决SnackBar遮挡悬浮按钮的问题-->
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-            <!--AppBarLayout是一个垂直方向的LinearLayout-->
-            <com.google.android.material.appbar.AppBarLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <!--使用Toolbar代替Actionbar-->
-                <androidx.appcompat.widget.Toolbar
-                    android:id="@+id/toolbar"
-                    android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
-                    android:background="?attr/colorPrimary"
-                    android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-                    app:layout_scrollFlags="scroll|enterAlways|snap"/>
-                <!--scroll表示当RecyclerView向上滚动时，Toolbar会随着一起向上滚动并实现隐藏
-                enterAlways表示当RecyclerView向下滚动的时候，Toolbar会跟着向下滚动并重新显示
-                snap表示当Toolbar还没有完全隐藏或者显示的时候，会根据当前滚动的距离，自动选择是隐藏还是显示-->
-            </com.google.android.material.appbar.AppBarLayout>
-
-            <!--用于实现下拉刷新功能的核心类 -->
-
-            <!--悬浮按钮控件 layout_gravity属性start表示放置位置为从系统语言角度看的开头，本例为右下角
-            app:elevation属性指定一个高度值，高度越大，投影范围越大，但是投影效果越差-->
-
-            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-                android:id="@+id/swipe_refresh"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior"><!--指定布局行为-->
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recycler_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-
-            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fab"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom|end"
-                android:layout_margin="16dp"
-                app:elevation="8dp"/>
-
-        </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
-        <!--滑动菜单的内容显示为NavigationView，通过app:menu以及app:headerLayout把menu和headerLayout设置进去-->
-        <com.google.android.material.navigation.NavigationView
-            android:id="@+id/nav_view"
+        <!--用于实现下拉刷新功能的核心类 -->
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_refresh"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="start"
-            />
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"><!--指定布局行为-->
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/order_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+        <!--悬浮按钮控件 layout_gravity属性start表示放置位置为从系统语言角度看的开头，本例为右下角
+        app:elevation属性指定一个高度值，高度越大，投影范围越大，但是投影效果越差-->
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/order_fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_marginBottom="15dp"
+            android:layout_marginRight="15dp"
+            android:src="@drawable/cart"
+            android:tint="#fff"
+            app:elevation="8dp"
+            app:backgroundTint="#61afea"/>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

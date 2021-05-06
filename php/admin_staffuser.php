@@ -1,7 +1,14 @@
 <?php
 session_start();
-include ('mysqli_connect.php');
 
+var_dump($_SESSION);
+include ('mysqli_connect.php');
+$userid=$_SESSION['userid'];
+if(!isset($userid)){
+	 echo "<script>alert('身份信息过期！请重新登录！');</script>";
+	 echo "<script>window.location.href='index.php'</script>";
+}
+include ('mysqli_connect.php');
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -56,7 +63,7 @@ include ('mysqli_connect.php');
     </div>
 </nav>
 <h1 style="text-align: center"><strong>档口管理员用户</strong></h1>
-<form  id="query" action="admin_user.php" method="POST">
+<form  id="query" action="admin_staffuser.php" method="POST">
     <div id="query">
         <label ><input  name="userquery" type="text" placeholder="请输入用户名" class="form-control"></label>
         <input type="submit" value="查询" class="btn btn-default">
@@ -67,24 +74,29 @@ include ('mysqli_connect.php');
     <tr>
         <th>用户ID号</th>
         <th>用户名</th>
-		<th>用户照片</th>
         <th>用户电话</th>
+		<th>用户所属档口</th>
+		<th>用户所属档口ID</th>
         <th>操作</th>
         <th>操作</th>
     </tr>
     <?php
     $gjc = $_POST["userquery"];
-    $sql="select userID,userName,userTel,userImage from userInfo where userType = '2' and userName like '%{$gjc}%';";
-	
-	
+    $sql="select userID,userName,userTel,userBelong from staffInfo where userType = '2' and userName like '%{$gjc}%';";
     $res=mysqli_query($dbc,$sql);
 	echo("错误描述: " . mysqli_error($dbc)); 
     foreach ($res as $row){
+		var_dump($row);
+		$sql1 = "select shopName from shopInfo where shopID = {$row['userBelong']};";
+		$res1 = mysqli_query($dbc,$sql1);
+		$shopName = mysqli_fetch_row($res1)[0];
+		
         echo "<tr>";
         echo "<td>{$row['userID']}</td>";
         echo "<td>{$row['userName']}</td>";
-        echo "<td><img src=http://49.234.101.49/ordering/{$row['userImage']} width='70' /></td>";
         echo "<td>{$row['userTel']}</td>";
+		echo "<td>{$row['userBelong']}</td>";
+		echo "<td>{$shopName}</td>";
         echo "<td><a href='admin_user_edit.php?id={$row['userID']}'>修改</a></td>";
         echo "<td><a href='admin_user_del.php?id={$row['userID']}'>删除</a></td>";
         echo "</tr>";

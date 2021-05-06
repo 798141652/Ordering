@@ -4,6 +4,9 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.example.ordering.structure.Shop;
+import com.example.ordering.structure.User;
+
 public class ShopDBManager {
 
     public static final int DBVERSION = 1;
@@ -30,41 +33,6 @@ public class ShopDBManager {
         } catch (Exception e) {
             db = dbhelper.getReadableDatabase();
         }
-        //获取服务器数据
-        /*new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-
-                    OkHttpClient client = new OkHttpClient();
-
-                    //生成json文件
-                    Request request1 = new Request.Builder()
-                            .url("http://49.234.101.49/ordering/shopdata.php")
-                            .build();
-
-                    //解析对应json文件
-                    Request request2 = new Request.Builder()
-                            .url("http://49.234.101.49/ordering/json/shopinfo.json")
-                            .build();
-
-                    //解析对应json文件
-                    Request request3 = new Request.Builder()
-                            .url("http://49.234.101.49/ordering/json/shopimageinfo.json")
-                            .build();
-                    Response response1 = client.newCall(request1).execute();
-                    Response response2 = client.newCall(request2).execute();
-                    Response response3 = client.newCall(request3).execute();
-                    String responseData2 = response2.body().string();
-                    String responseData3 = response3.body().string();
-                    System.out.println(responseData2);
-                    parseJSONWithGSON(responseData2);
-                    parseImageJSONWithGSON(responseData3);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();*/
     }
 
     public SQLiteDatabase getDb() {
@@ -85,9 +53,31 @@ public class ShopDBManager {
     }
 
 
-    //删除档口
-    public void deleteshop(String shopid) {
-        db.delete(TABLE, SHOP_ID + "='" + shopid + "'", null);
+    //删除档口表信息
+    public void deleteShopInfo() {
+        db.execSQL("delete from shopInfo");
+        db.execSQL("update sqlite_sequence set seq=0 where name='shopInfo'");
+    }
+
+    //通过档口ID查找档口信息
+    public Shop getShopInfoByID(int shopID) {
+        Cursor cursor = db.query(TABLE,
+                null,
+                "shopID" + "=" + shopID + "",
+                null, null, null, null, null);
+        Shop shop = new Shop();// 存储数据
+        int count = cursor.getCount();
+        if (count == 0 || !cursor.moveToFirst()) {
+            System.out.println("数据表中没有数据");
+            return null;
+        } else {
+            shop.shopID = shopID;
+            shop.shopName = cursor.getString(cursor.getColumnIndex("shopName"));
+            shop.shopImage = cursor.getString(cursor.getColumnIndex("shopImage"));
+            shop.shopBrief = cursor.getString(cursor.getColumnIndex("shopBrief"));
+            shop.shopLocation = cursor.getString(cursor.getColumnIndex("shopLocation"));
+            return shop;
+        }
     }
 
     /*

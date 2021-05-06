@@ -2,6 +2,8 @@ package com.example.ordering.structure;
 
 import android.app.Application;
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,18 +12,20 @@ public class MyApplication extends Application {
 
     private static Context context;
 
-    private List<Shop> shopList = new ArrayList<>();
+    private List<List<Shop>> shitangList = new ArrayList<List<Shop>>();
+    //private List<Car> shopList = new ArrayList<>();
+    //private List<Shop> shopList = new ArrayList<>();
 
     public int state;
     public Boolean loginstatus = false;
     public String uid;
 
-    public List<Shop> getShopList() {
-        return shopList;
+    public List<List<Shop>> getshitangList() {
+        return shitangList;
     }
 
-    public void setShopList(List<Shop> shopList) {
-        this.shopList = shopList;
+    public void setshitangList(List<List<Shop>> shopList) {
+        this.shitangList = shopList;
     }
 
     public int getState() {
@@ -58,5 +62,19 @@ public class MyApplication extends Application {
 
     public static Context getContext(){
         return context;
+    }
+
+    public boolean isConnectInternet() {
+
+        ConnectivityManager conManager=(ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE );
+
+        NetworkInfo networkInfo = conManager.getActiveNetworkInfo();
+
+        if (networkInfo != null ){ // 注意，这个判断一定要的哦，要不然会出错
+
+            return networkInfo.isAvailable();
+
+        }
+        return false ;
     }
 }

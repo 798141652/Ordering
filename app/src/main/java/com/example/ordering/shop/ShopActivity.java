@@ -5,9 +5,10 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
@@ -23,7 +24,7 @@ import com.example.ordering.R;
 import com.example.ordering.db.DishDBManager;
 import com.example.ordering.db.ShopDBManager;
 import com.example.ordering.dish.DishAdapter;
-import com.example.ordering.order.OrderedActivity;
+import com.example.ordering.cart.CartActivity;
 import com.example.ordering.structure.Dish;
 import com.example.ordering.structure.MyApplication;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -62,6 +63,20 @@ public class ShopActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        /*
+        //透明状态栏
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        //透明导航栏
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+
+         */
+
+        Window window = getWindow();
+        //设置修改状态栏
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        //设置状态栏的颜色，和你的APP主题或者标题栏颜色一致就可以了
+        window.setStatusBarColor(getResources().getColor(R.color.toolbarblue));
+
         setContentView(R.layout.activity_shop);
         initView();
 
@@ -77,7 +92,7 @@ public class ShopActivity extends AppCompatActivity {
                     Intent intent = new Intent("com.example.ordering.login");
                     startActivity(intent);
                 }else {
-                    Intent intent = new Intent(ShopActivity.this, OrderedActivity.class);
+                    Intent intent = new Intent(ShopActivity.this, CartActivity.class);
                     startActivity(intent);
                 }
             }
@@ -114,46 +129,13 @@ public class ShopActivity extends AppCompatActivity {
         dishadapter = new DishAdapter(dishList);
         recyclerView.setAdapter(dishadapter);
 
-        actionBar = getSupportActionBar();
-        if(actionBar != null){
-            actionBar.setDisplayHomeAsUpEnabled(true);//启动HomeAsUp按钮，HomeAsUp按钮的默认图标就是一个返回箭头
-        }
-        Glide.with(this).load(shopImage).into(shopImageView);//使用Glide加载传入的水果图片，并设置在标题栏的ImageView上面
-
-        //下拉刷新
-        /*swipeRefreshLayout = findViewById(R.id.swipe_dish_refresh);//拿到swipeRefreshLayout实例
-        swipeRefreshLayout.setColorSchemeResources(R.color.design_default_color_primary);//设置下拉刷新进度条的颜色
-        //设置一个下拉刷新的监听器
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {//当触发了下拉刷新操作的时候会回调这个监听器的onRefresh()方法，在这里处理具体的刷新逻辑
-                refreshDish();
-            }
-        });
+        //使用Glide加载传入的档口图片，并设置在标题栏的ImageView上面
+        Glide.with(this).
+                load("http://49.234.101.49/ordering/"+shopImage)
+                .placeholder(R.drawable.loading)
+                .into(shopImageView);
     }
 
-        private void refreshDish(){
-            //先开启一个线程
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        Thread.sleep(2000);//线程沉睡2秒钟，因为本地刷新操作速度非常快，如果不将线程沉睡的话，刷新立刻就结束了，从而看不到刷新的过程
-                    }catch (InterruptedException e){
-                        e.printStackTrace();
-                    }
-                    //睡眠结束后，runOnUiThread方法将线程切换回主线程
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            initView();//重新生成数据
-                            dishadapter.notifyDataSetChanged();//notifyDataSetChanged方法通知数据发生了变化
-                            swipeRefreshLayout.setRefreshing(false);//用于表示刷新事件结束，并隐藏刷新进度条
-                        }
-                    });
-                }
-            }).start();*/
-        }
 
 
     @Override
@@ -176,7 +158,7 @@ public class ShopActivity extends AppCompatActivity {
                 int dishID = cursor.getInt(cursor.getColumnIndex("dishID"));
                 int shopID = cursor.getInt(cursor.getColumnIndex("shopID"));
                 String dishName = cursor.getString(cursor.getColumnIndex("dishName"));
-                int dishImage = cursor.getInt(cursor.getColumnIndex("dishImage"));
+                String dishImage = cursor.getString(cursor.getColumnIndex("dishImage"));
                 Double dishPrice = cursor.getDouble(cursor.getColumnIndex("dishPrice"));
                 String dishType = cursor.getString(cursor.getColumnIndex("dishType"));
 

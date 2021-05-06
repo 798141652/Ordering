@@ -1,6 +1,11 @@
 <?php
 session_start();
+var_dump($_SESSION);
 $userid=$_SESSION['userid'];
+if(!isset($userid)){
+	 echo "<script>alert('身份信息过期！请重新登录！');</script>";
+	 echo "<script>window.location.href='index.php'</script>";
+}
 include ('mysqli_connect.php');
 require_once 'imagecompress.php';
 ?>
@@ -87,33 +92,59 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 	if(!isset($userID)||$userID == ""){
 		echo "<script>alert('用户ID不能为空！请重新输入！');</script>";
 	}else{
-				//图片压缩
-				$percent = 0.5;
-				//压缩后的图片存入内部目录
-				$imagePath = "image/userPhoto".$userID.".".image_type_to_extension(getimagesize($_FILES["img"]["tmp_name"])[2],false);
-				echo $imagePath;
+				if(empty($_FILES["img"]["tmp_name"])){
+					$imagePath = "image/defaultimage.jpeg";
+				}
+				else{
+					//图片压缩
+					$percent = 0.5;
+					//压缩后的图片存入内部目录
+					$imagePath = "image/userPhoto".$userID.".".image_type_to_extension(getimagesize($_FILES["img"]["tmp_name"])[2],false);
+					echo $imagePath;
 
-				(new imgcompress($_FILES["img"]["tmp_name"],$percent))->compressImg($imagePath);
-
-				$sql="select * from userInfo where userID = '{$userID}'";
-				if(mysqli_query($dbc,$sql)->num_rows == 0){
-					$sqla="insert into userInfo(userID,userName,userImage,userTel,userType) VALUES ({$userID} ,'{$userName}','{$imagePath}','{$userTel}','{$userType}')";
-					$resa=mysqli_query($dbc,$sqla);
-					if($resa==1)
-					{
-						echo "<script>alert('添加成功！')</script>";
-						echo "<script>window.location.href='admin_user.php'</script>";
-
-					}
-					else
-					{
-						echo("错误描述: " . mysqli_error($dbc)); 
-						echo "<script>alert('添加失败！请重新输入！');</script>";
-
+					(new imgcompress($_FILES["img"]["tmp_name"],$percent))->compressImg($imagePath);
+				}
+				
+				if($userType == "2"){
+					$sql="select * from staffInfo where userID = '{$userID}'";
+					if(mysqli_query($dbc,$sql)->num_rows == 0){
+						$sqla="insert into staffInfo(userID,userName,userImage,userTel,userType) VALUES ({$userID} ,'{$userName}','{$imagePath}','{$userTel}','2')";
+						$resa=mysqli_query($dbc,$sqla);
+						if($resa==1)
+						{
+							echo "<script>alert('添加成功！')</script>";
+							echo "<script>window.location.href='admin_user.php'</script>";
+						}
+						else
+						{
+							echo("错误描述: " . mysqli_error($dbc)); 
+							echo "<script>alert('添加失败！请重新输入！');</script>";
+						}
+					}else{
+						//var_dump($imageProperties);
+							echo "<script>alert('添加失败！该ID已经存在！请重新输入！');</script>";
 					}
 				}else{
-					//var_dump($imageProperties);
-						echo "<script>alert('添加失败！该ID已经存在！请重新输入！');</script>";
+					$sql="select * from userInfo where userID = '{$userID}'";
+					if(mysqli_query($dbc,$sql)->num_rows == 0){
+						$sqla="insert into userInfo(userID,userName,userImage,userTel) VALUES ({$userID} ,'{$userName}','{$imagePath}','{$userTel}')";
+						$resa=mysqli_query($dbc,$sqla);
+						if($resa==1)
+						{
+							echo "<script>alert('添加成功！')</script>";
+							echo "<script>window.location.href='admin_user.php'</script>";
+
+						}
+						else
+						{
+							echo("错误描述: " . mysqli_error($dbc)); 
+							echo "<script>alert('添加失败！请重新输入！');</script>";
+
+						}
+					}else{
+						//var_dump($imageProperties);
+							echo "<script>alert('添加失败！该ID已经存在！请重新输入！');</script>";
+					}
 				}
 				mysqli_close($dbc);			
 	

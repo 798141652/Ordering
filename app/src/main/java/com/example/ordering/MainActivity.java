@@ -1,10 +1,21 @@
 package com.example.ordering;
 
+import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -30,48 +41,86 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     public static MyApplication app;
-    public List<Shop> shopList = new ArrayList<>();
+    public List<Shop> shopList;
+    public List<List<Shop>> shitangList = new ArrayList<List<Shop>>();
     public ShopDBManager shopDBManager;
+
+    private SharedPreferences message;
+
+    private IntentFilter intentFilter;
+    private NetworkChangeReceiver networkChangeReceiver;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        app = (MyApplication) getApplication();
+        super.onCreate(savedInstanceState);
 
+
+        message = getSharedPreferences("logindata", Activity.MODE_PRIVATE);
+        if(message.getInt("iflogin",0) == 0){
+            if(!app.getLoginState()) {
+                Intent intent = new Intent(MyApplication.getContext(), LoginActivity.class);
+                startActivity(intent);
+            }
+        }else {
+            showActivityView();
+            String userID = message.getString("userID", "");
+            app.setLoginstatus(true);
+            app.setUid(userID);
+        }
+    }
+
+    public void showActivityView(){
         //刷新数据，使服务器数据与客户端相同
-        RefreshData refreshData = new RefreshData();
-        refreshData.refresh();
+        //RefreshData refreshData = new RefreshData();
+        //refreshData.refresh();
         //获取数据列表
         shopDBManager = new ShopDBManager(MyApplication.getContext());
         shopDBManager.open();
-        Cursor cursor = shopDBManager.getDb().query("shopInfo",null,null,null,null,null,null);
-        if(cursor.moveToFirst()){
+        Cursor cursor = shopDBManager.getDb().query("shopInfo", null, null, null, "shopLocation", null, null);
+        if (cursor.moveToFirst()) {
             do {
-                int shopID = cursor.getInt(cursor.getColumnIndex("shopID"));
-                String shopName = cursor.getString(cursor.getColumnIndex("shopName"));
-                String shopImage = cursor.getString(cursor.getColumnIndex("shopImage"));
-                String shopLocation = cursor.getString(cursor.getColumnIndex("shopLocation"));
-                String shopBrief = cursor.getString(cursor.getColumnIndex("shopBrief"));
-                Shop shop = new Shop(shopID,shopName,shopImage,shopLocation,shopBrief);
-                shopList.add(shop);
-            }while (cursor.moveToNext());
+                shopList = new ArrayList<Shop>();
+                String abc = cursor.getString(cursor.getColumnIndex("shopLocation"));
+                Cursor cursor1 = shopDBManager.getDb().rawQuery("select * from shopInfo where shopLocation ='"+
+                        cursor.getString(cursor.getColumnIndex("shopLocation"))+"'",null);
+                if(cursor1.moveToFirst()) {
+                    do {
+                        int shopID = cursor1.getInt(cursor1.getColumnIndex("shopID"));
+                        String shopName = cursor1.getString(cursor1.getColumnIndex("shopName"));
+                        String shopImage = cursor1.getString(cursor1.getColumnIndex("shopImage"));
+                        String shopLocation = cursor1.getString(cursor1.getColumnIndex("shopLocation"));
+                        String shopBrief = cursor1.getString(cursor1.getColumnIndex("shopBrief"));
+                        Shop shop = new Shop(shopID, shopName, shopImage, shopLocation, shopBrief);
+                        shopList.add(shop);
+                    }while (cursor1.moveToNext());
+                }
+                shitangList.add(shopList);
+                cursor1.close();
+            } while (cursor.moveToNext());
         }
         cursor.close();
-        app= (MyApplication) getApplication();
-        app.setShopList(shopList);
+        app.setshitangList(shitangList);
 
-        super.onCreate(savedInstanceState);
+        //修改状态栏颜色
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = getWindow();
+            //设置修改状态栏
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            //设置状态栏的颜色，和你的APP主题或者标题栏颜色一致就可以了
+            window.setStatusBarColor(getResources().getColor(R.color.toolbarblue));
+        }
         setContentView(R.layout.activity_main);
-
-
         /**标题栏初始化*/
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);//将Toolbar实例传入,既使用了Toolbar,也让它的外观与功能都与ActionBar一致了
         //标题栏
         ActionBar actionBar = getSupportActionBar();//通过getSupportActionBar方法获取到ActionBar实例，这个ActionBar具体是由ToolBar实现的
-        if(actionBar != null){
+        if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);//让导航按钮HomeAsUp显示出来，此按钮默认图标是返回箭头，含义是返回上一个活动
-            actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
+            //actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
         }
-        findViewById(R.id.login);
 
         //this.getSupportActionBar().hide();
 
@@ -79,14 +128,15 @@ public class MainActivity extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications)
+                R.id.navigation_cart, R.id.navigation_order, R.id.navigation_settings)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
 
-
+//        navView.setOnNavigationItemSelectedListener((BottomNavigationView.OnNavigationItemSelectedListener) this);
     }
+
 
     //Toolbar中的菜单
     public boolean onCreateOptionsMenu(Menu menu){
@@ -98,25 +148,40 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.login:
-
-
+            case R.id.logout:
                 app = (MyApplication) getApplication();
-                app.setState(1);
-                if (app.getLoginState() == false) {
-                    System.out.println("Login success");
-                    Intent intent = new Intent("com.example.ordering.login");
-                    startActivity(intent);
-                    item.setIcon(getResources().getDrawable(R.drawable.ic_settings));
-                    app.setLoginstatus(true);
-                } else {
-                    item.setIcon(getResources().getDrawable(R.drawable.ic_backup));
-                    app.setLoginstatus(false);
-                    Toast.makeText(MainActivity.this,"退出登录",Toast.LENGTH_SHORT).show();
-                }
+                //app.setState(1);
+                //item.setIcon(getResources().getDrawable(R.drawable.ic_backup));
+                app.setLoginstatus(false);
+                SharedPreferences uSetting = getSharedPreferences("logindata", Activity.MODE_PRIVATE);
+                SharedPreferences.Editor editor = uSetting.edit();
+                editor.putInt("iflogin",0);
+                editor.apply();
+                Intent intent = new Intent("com.example.ordering.login");
+                startActivity(intent);
+                Toast.makeText(MainActivity.this,"退出登录",Toast.LENGTH_SHORT).show();
                 break;
             default:
         }
         return true;
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        intentFilter = new IntentFilter();
+        intentFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+        networkChangeReceiver = new NetworkChangeReceiver();
+        registerReceiver(networkChangeReceiver,intentFilter);
+
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(networkChangeReceiver);
+    }
+
+
 }

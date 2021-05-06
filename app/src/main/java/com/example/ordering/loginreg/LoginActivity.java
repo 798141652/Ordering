@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -31,7 +33,16 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+
+        Window window = getWindow();
+        //设置修改状态栏
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        //设置状态栏的颜色，和你的APP主题或者标题栏颜色一致就可以了
+        window.setStatusBarColor(getResources().getColor(R.color.toolbarblue));
+
+
         setContentView(R.layout.activity_login);
         et_userID = findViewById(R.id.editUid);
         et_password = findViewById(R.id.editPwd);
@@ -89,11 +100,14 @@ public class LoginActivity extends AppCompatActivity {
                     // 修改状态
                     app.setLoginstatus(true);
                     app.setUid(userID);
+                    SharedPreferences uSetting = getSharedPreferences(ufile, Activity.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = uSetting.edit();
+                    editor.putInt("iflogin", 1);
+                    editor.apply();
                     // 跳转
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                    setResult(RESULT_OK, intent);
                     Toast.makeText(LoginActivity.this, "登陆成功", Toast.LENGTH_SHORT).show();
-                    finish();
+                    startActivity(intent);
                 }
             }
         });
@@ -140,6 +154,6 @@ public class LoginActivity extends AppCompatActivity {
         editor.putString("userID", id);
         editor.putString("password", key);
         editor.putInt("ifrem", ifrem);
-        editor.commit();
+        editor.apply();
     }
 }

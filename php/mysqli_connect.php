@@ -1,4 +1,5 @@
 <?php
+session_start();
 DEFINE ('DB_USER','root');
 DEFINE ('DB_PASSWORD','19981126');
 DEFINE ('DB_HOST','localhost');

@@ -18,6 +18,7 @@
             android:id="@+id/btnSub"
             android:layout_width="40dp"
             android:layout_height="40dp"
+            android:backgroundTint="#3397e4"
             android:text="-" />
         <TextView
             android:id="@+id/tvOrderNum"
@@ -28,6 +29,7 @@
             android:id="@+id/btnAdd"
             android:layout_width="40dp"
             android:layout_height="40dp"
+            android:backgroundTint="#3397e4"
             android:text="+" />
     </LinearLayout>
     <LinearLayout
@@ -39,11 +41,13 @@
             android:id="@+id/order_dialog_ok"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
+            android:backgroundTint="#3397e4"
             android:text="确定" />
         <Button
             android:id="@+id/order_dialog_cancel"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
+            android:backgroundTint="#3397e4"
             android:text="取消" />
     </LinearLayout>
 

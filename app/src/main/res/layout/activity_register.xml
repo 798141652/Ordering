@@ -4,6 +4,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
+    <ImageView
+        android:id="@+id/login_image"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="130dp"
+        android:src="@drawable/launch1"/>
 
     <TextView
         android:id="@+id/reg_note"
@@ -11,26 +18,32 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
+        android:layout_below="@+id/login_image"
+        android:layout_marginTop="10dp"
         android:text="填写注册信息" />
 
 
-
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/reg_note"
+        android:layout_marginTop="5dp"
+        android:layout_centerHorizontal="true">
     <TextView
         android:id="@+id/text_userID"
         style="text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/reg_note"
         android:layout_marginTop="15dp"
         android:text="用户名" />
 
     <EditText
         android:id="@+id/reg_userID"
         style="inputText"
-        android:layout_width="match_parent"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/text_userID"
+        android:layout_alignLeft="@+id/reg_confirm"
         android:layout_toRightOf="@+id/text_userID"
         android:hint="请输入用户名" />
 
@@ -48,10 +61,10 @@
     <EditText
         android:id="@+id/reg_passowrd"
         style="inputText"
-        android:layout_width="match_parent"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/text_password"
-        android:layout_alignLeft="@+id/reg_userID"
+        android:layout_alignLeft="@+id/reg_confirm"
         android:layout_toRightOf="@+id/text_password"
         android:hint="请输入密码"
         android:inputType="textPassword" />
@@ -70,10 +83,10 @@
     <EditText
         android:id="@+id/reg_confirm"
         style="inputText"
-        android:layout_width="match_parent"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
         android:layout_alignBaseline="@+id/textConfirm"
-        android:layout_alignLeft="@+id/reg_userID"
         android:layout_toRightOf="@+id/textConfirm"
         android:hint="密码确认"
         android:inputType="textPassword" />
@@ -83,6 +96,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/reg_confirm"
+        android:backgroundTint="#3397e4"
         android:text="注册" />
 
     <Button
@@ -91,27 +105,25 @@
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/reg_btn_register"
         android:layout_toRightOf="@+id/reg_btn_register"
+        android:backgroundTint="#3397e4"
         android:text="返回登陆" />
     <Button
         android:id="@+id/take_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/reg_btn_register"
-        android:layout_toRightOf="@+id/reg_btn_login"
+        android:layout_below="@+id/reg_btn_login"
+        android:backgroundTint="#3397e4"
         android:text="拍照"/>
     <Button
         android:id="@+id/select_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/reg_btn_register"
+        android:layout_below="@+id/reg_btn_login"
         android:layout_toRightOf="@+id/take_image"
+        android:backgroundTint="#3397e4"
         android:text="相册选择照片"/>
 
-    <ImageView
-        android:id="@+id/user_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/select_image" />
+    </RelativeLayout>
 
 
 

@@ -6,14 +6,13 @@
     android:layout_margin="5dp"
     app:cardCornerRadius="4dp">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="110dp">
 
         <ImageView
             android:id="@+id/dish_image"
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
             android:layout_height="100dp"
             android:scaleType="centerInside" />
 
@@ -21,18 +20,35 @@
             android:id="@+id/dish_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:layout_marginStart="100dp"
-            android:layout_marginTop="0dp"
-            android:textSize="16sp" />
+            android:layout_toEndOf="@+id/dish_image"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="15dp"
+            android:textSize="18sp"
+            android:textColor="#000"
+            />
+
+        <TextView
+            android:id="@+id/dish_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/dish_image"
+            android:layout_below="@+id/dish_name"
+            android:layout_marginTop="25dp"
+            android:layout_marginStart="15dp"
+            android:textSize="16sp"
+            android:textColor="#cc0000" />
 
         <ImageView
             android:id="@+id/dish_add"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_gravity="right|bottom"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="10dp"
+            android:layout_marginEnd="10dp"
+            android:tint="#3397e4"
             android:src="@drawable/add" />
 
-    </LinearLayout>
+    </RelativeLayout>
 
 </androidx.cardview.widget.CardView>

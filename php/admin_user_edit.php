@@ -1,5 +1,12 @@
 <?php
 session_start();
+var_dump($_SESSION);
+$userid=$_SESSION['userid'];
+if(!isset($userid)){
+	 echo "<script>alert('身份信息过期！请重新登录！');</script>";
+	 echo "<script>window.location.href='index.php'</script>";
+}
+include ('mysqli_connect.php');
 require_once 'imagecompress.php';
 include ('mysqli_connect.php');
 
@@ -15,7 +22,7 @@ $results=mysqli_fetch_array($ress);
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Ordering || 修改档口</title>
+    <title>Ordering || 修改用户</title>
     <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -86,13 +93,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
     $userName = $_POST["userName"];
     $userTel = $_POST["userTel"];
 	
-	//图片压缩
-	$percent = 0.5;
-	//压缩后的图片存入内部目录
-	$imagePath = "image/userPhoto".$userID.".".image_type_to_extension(getimagesize($_FILES["img"]["tmp_name"])[2],false);
-	echo $imagePath;
-
-	(new imgcompress($_FILES["img"]["tmp_name"],$percent))->compressImg($imagePath);
+	if(empty($_FILES["img"]["tmp_name"])){
+		$imagePath = "image/defaultimage.jpeg";
+	}
+	else{
+		//图片压缩
+		$percent = 0.5;
+		//压缩后的图片存入内部目录
+		$imagePath = "image/userPhoto".$userID.".".image_type_to_extension(getimagesize($_FILES["img"]["tmp_name"])[2],false);
+		echo $imagePath;
+		if(file_exists($imagePath)){
+		unlink($imagePath);
+		(new imgcompress($_FILES["img"]["tmp_name"],$percent))->compressImg($imagePath);
+	}
  
 	$sqla="update userInfo set userName='{$userName}',userImage='{$imagePath}',userTel='{$userTel}' where userID=$userid;";
     $resa=mysqli_query($dbc,$sqla);

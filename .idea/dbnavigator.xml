@@ -26,7 +26,7 @@
     <show-object-properties value="true" />
     <loaded-nodes>
       <connection connection-id="a36d815b-24a6-4bb1-82f2-569f8d8730d9">
-        <schema name="main" object-types="table, view" />
+        <schema name="main" object-types="table, index, dataset trigger, column, constraint, view" />
       </connection>
     </loaded-nodes>
   </component>
@@ -42,6 +42,8 @@
     <connection id="a36d815b-24a6-4bb1-82f2-569f8d8730d9" />
   </component>
   <component name="DBNavigator.Project.DatasetFilterManager">
+    <filter-actions connection-id="a36d815b-24a6-4bb1-82f2-569f8d8730d9" dataset="main.cartInfo" active-filter-id="EMPTY_FILTER" />
+    <filter-actions connection-id="a36d815b-24a6-4bb1-82f2-569f8d8730d9" dataset="main.commentInfo" active-filter-id="EMPTY_FILTER" />
     <filter-actions connection-id="a36d815b-24a6-4bb1-82f2-569f8d8730d9" dataset="main.dishInfo" active-filter-id="EMPTY_FILTER" />
     <filter-actions connection-id="a36d815b-24a6-4bb1-82f2-569f8d8730d9" dataset="main.userInfo" active-filter-id="EMPTY_FILTER" />
     <filter-actions connection-id="a36d815b-24a6-4bb1-82f2-569f8d8730d9" dataset="main.sqlite_sequence" active-filter-id="EMPTY_FILTER" />
@@ -97,7 +99,7 @@
           <port value="1234" />
           <database value="database" />
           <files>
-            <file path="E:\Ordering.db" schema="main" />
+            <file path="D:\Ordering.db" schema="main" />
           </files>
           <type value="NONE" />
           <user value="" />

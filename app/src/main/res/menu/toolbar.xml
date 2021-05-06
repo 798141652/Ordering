@@ -3,22 +3,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/login"
-        android:icon="@drawable/ic_backup"
+        android:id="@+id/logout"
+        android:icon="@drawable/logout"
         android:title="Login"
-        app:showAsAction="always"/>
-    <item
-        android:id="@+id/delete"
-        android:icon="@drawable/ic_delete"
-        android:title="Delete"
-        app:showAsAction="ifRoom"/>
-    <item
-        android:id="@+id/settings"
-        android:icon="@drawable/ic_settings"
-        android:title="Settings"
-        app:showAsAction="never"/>
-    <!--always表示永远显示在Toolbar中，如果屏幕尺寸不够则不显示
-        ifRoom表示屏幕空间足够的情况下显示在Toolbar中，不够的话就先是在菜单中
-        never表示永远显示在菜单中
-        注意，Toolbar中的action按钮只会显示图标，菜单中的action按钮只会显示文字-->
+        app:showAsAction="always" />
 </menu>
