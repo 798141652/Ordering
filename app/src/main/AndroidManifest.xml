@@ -7,6 +7,10 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
+    <queries>
+        <package android:name="com.eg.android.AlipayGphone" />
+        <package android:name="hk.alipay.wallet" />
+    </queries>
 
     <application
         android:name=".structure.MyApplication"
@@ -18,9 +22,15 @@
         android:roundIcon="@mipmap/logo"
         android:supportsRtl="true"
         android:theme="@style/Theme.Ordering">
+        <service
+            android:name=".ui.settings.UpdateDataService"
+            android:enabled="true"
+            android:exported="true"></service>
+
         <activity android:name=".LaunchActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -32,25 +42,19 @@
         <activity android:name=".shop.ShopActivity" />
         <activity android:name=".dish.DishActivity" />
         <activity android:name=".cart.CartActivity" />
-        <activity android:name=".comment.CommentActivity"/>
+        <activity android:name=".comment.CommentActivity" />
         <activity android:name=".ui.order.OrderActivity" />
         <activity android:name=".loginreg.LoginActivity">
             <intent-filter>
                 <action android:name="com.example.ordering.login" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity android:name=".loginreg.RegisterActivity" />
         <activity
             android:name=".MainActivity"
-            android:label="点餐App">
-
-        </activity>
-
+            android:label="点餐App"></activity>
     </application>
-    <queries>
-        <package android:name="com.eg.android.AlipayGphone"/>
-        <package android:name="hk.alipay.wallet"/>
-    </queries>
 
 </manifest>

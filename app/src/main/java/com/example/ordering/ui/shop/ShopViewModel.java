@@ -49,6 +49,7 @@ public class ShopViewModel extends ViewModel {
             } while (cursor.moveToNext());
         }
         cursor.close();
+        shopDBManager.getDb().close();
     }
 
     public List<List<Shop>> getshitangList(){

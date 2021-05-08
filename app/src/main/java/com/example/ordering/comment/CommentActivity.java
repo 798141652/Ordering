@@ -111,6 +111,8 @@ public class CommentActivity extends AppCompatActivity {
             } while (cursor.moveToNext());
         }
         cursor.close();
+        cartDBManager.getDb().close();
+        dishDBManager.getDb().close();
     }
 
 

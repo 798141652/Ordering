@@ -67,9 +67,12 @@ public class DishDBManager {
         int count = cursor.getCount();
         if (count == 0 || !cursor.moveToFirst()) {
             System.out.println("数据表中没有数据");
+            cursor.close();
             return null;
         } else {
-            return cursor.getString(cursor.getColumnIndex("dishImage"));
+            String dishName = cursor.getString(cursor.getColumnIndex("dishImage"));
+            cursor.close();
+            return dishName;
         }
     }
 
@@ -78,6 +81,7 @@ public class DishDBManager {
         int count = cursor.getCount();
         if (count == 0 || !cursor.moveToFirst()) {
             System.out.println("数据表中没有数据");
+            cursor.close();
             return null;
         } else {
             Dish dish = new Dish();
@@ -87,6 +91,7 @@ public class DishDBManager {
             dish.shopID = cursor.getInt(cursor.getColumnIndex("shopID"));
             dish.dishPrice = cursor.getDouble(cursor.getColumnIndex("dishPrice"));
             dish.dishType = cursor.getString(cursor.getColumnIndex("dishType"));
+            cursor.close();
             return dish;
         }
     }

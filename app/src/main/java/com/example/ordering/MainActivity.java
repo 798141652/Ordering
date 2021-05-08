@@ -1,29 +1,23 @@
 package com.example.ordering;
 
 import android.app.Activity;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.ordering.db.ShopDBManager;
-import com.example.ordering.db.UserDBManager;
 import com.example.ordering.loginreg.LoginActivity;
 import com.example.ordering.structure.MyApplication;
 import com.example.ordering.structure.Shop;
+import com.example.ordering.ui.settings.UpdateDataService;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.annotation.NonNull;
@@ -56,6 +50,8 @@ public class MainActivity extends AppCompatActivity {
         app = (MyApplication) getApplication();
         super.onCreate(savedInstanceState);
 
+        //Intent startIntent = new Intent(this, UpdateDataService.class);
+        //startService(startIntent);
 
         message = getSharedPreferences("logindata", Activity.MODE_PRIVATE);
         if(message.getInt("iflogin",0) == 0){
@@ -69,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
             app.setLoginstatus(true);
             app.setUid(userID);
         }
+
     }
 
     public void showActivityView(){
@@ -101,6 +98,7 @@ public class MainActivity extends AppCompatActivity {
             } while (cursor.moveToNext());
         }
         cursor.close();
+        shopDBManager.getDb().close();
         app.setshitangList(shitangList);
 
         //修改状态栏颜色
@@ -173,13 +171,19 @@ public class MainActivity extends AppCompatActivity {
         intentFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
         networkChangeReceiver = new NetworkChangeReceiver();
         registerReceiver(networkChangeReceiver,intentFilter);
+    }
 
-
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unregisterReceiver(networkChangeReceiver);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        //Intent stopIntent = new Intent(this,UpdateDataService.class);
+        //stopService(stopIntent);
         unregisterReceiver(networkChangeReceiver);
     }
 

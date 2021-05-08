@@ -72,7 +72,7 @@ include ('mysqli_connect.php');
 	foreach($res1 as $row1){
 	$res2 = mysqli_query($dbc,"select dishName from dishInfo where dishID = {$row1['dishID']}");
 	$result = mysqli_fetch_array($res2);
-	echo "<table border='4' width='100%' class='table table-hover'>
+	echo "<table border='2' width='100%' class='table table-hover' style='table-layout:fixed'>
     <tr>
 		<th>评论ID</th>
         <th>订单号</th>

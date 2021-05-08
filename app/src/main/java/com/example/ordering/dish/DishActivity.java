@@ -203,6 +203,7 @@ public class DishActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
         dishCommentAdapter = new DishCommentAdapter(commentList);
         recyclerView.setAdapter(dishCommentAdapter);
+        dishDBManager.getDb().close();
     }
 
     @Override

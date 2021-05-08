@@ -2,15 +2,12 @@ package com.example.ordering;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.WindowManager;
 import android.widget.Toast;
 
@@ -71,6 +68,8 @@ public class LaunchActivity extends AppCompatActivity {
                 }
             }
         }).start();
+
+
     }
 
     @Override

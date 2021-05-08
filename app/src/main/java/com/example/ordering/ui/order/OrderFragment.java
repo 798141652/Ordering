@@ -58,11 +58,7 @@ public class OrderFragment extends Fragment {
 
     private Handler handler;
 
-    private ShopDBManager shopDBManager;
-    private DishDBManager dishDBManager;
-    private UserDBManager userDBManager;
     private CartDBManager cartDBManager;
-    private CommentDBManager commentDBManager;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -79,14 +75,6 @@ public class OrderFragment extends Fragment {
 
     //初始化订单界面
     public void initViews() {
-        shopDBManager = new ShopDBManager(MyApplication.getContext());
-        shopDBManager.open();
-        dishDBManager = new DishDBManager(MyApplication.getContext());
-        dishDBManager.open();
-        userDBManager = new UserDBManager(MyApplication.getContext());
-        userDBManager.open();
-        commentDBManager = new CommentDBManager(MyApplication.getContext());
-        commentDBManager.open();
         cartDBManager = new CartDBManager(MyApplication.getContext());
         cartDBManager.open();
         app = (MyApplication) MyApplication.getContext().getApplicationContext();
@@ -280,21 +268,12 @@ public class OrderFragment extends Fragment {
         cartDBManager.deleteCartInfo();
         if (cartList != null) {
             for (Cart cart : cartList) {
-                shopDBManager.getDb().execSQL("insert into cartInfo values(" + cart.getCartID() + ",'" + cart.getOrderID() + "'," + cart.getCartUserID() +
+                cartDBManager.getDb().execSQL("insert into cartInfo values(" + cart.getCartID() + ",'" + cart.getOrderID() + "'," + cart.getCartUserID() +
                         "," + cart.getCartDishID() + "," + cart.getCartShopID() + ",'" + cart.getCartDishName() + "'," + cart.getCartDishNum() +
                         "," + cart.getCartDishPrice() + "," + cart.getCartPrice() + ",'" + cart.getCartStatus() + "','" + cart.getCartTime() + "')");
             }
         }
+        //cartDBManager.getDb().close();
     }
 
-    private void parseCommentJSONWithGSON(String jsonData) {
-        Gson gson = new Gson();
-        List<Shop> shopList = gson.fromJson(jsonData, new TypeToken<List<Shop>>() {
-        }.getType());
-        shopDBManager.deleteShopInfo();
-        for (Shop shop : shopList) {
-            shopDBManager.getDb().execSQL("insert into shopInfo values(" + shop.getShopID() + ",'" + shop.getShopName() + "','" + shop.getShopImage() +
-                    "','" + shop.getShopLocation() + "','" + shop.getShopBrief() + "')");
-        }
-    }
 }

@@ -163,7 +163,7 @@ public class OrderActivity extends AppCompatActivity {
 
                     }
                 });
-
+            dbManager.getDb().close();
             }
         });
 

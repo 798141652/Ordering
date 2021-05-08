@@ -51,6 +51,36 @@ public class RefreshData {
         commentDBManager = new CommentDBManager(MyApplication.getContext());
         commentDBManager.open();
     }
+
+    public void refreshUser(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    OkHttpClient client = new OkHttpClient();
+                    //生成用户json文件
+                    Request userRequest1 = new Request.Builder()
+                            .url("http://49.234.101.49/ordering/userdata.php")
+                            .build();
+
+                    //解析对应用户json文件
+                    Request userRequest2 = new Request.Builder()
+                            .url("http://49.234.101.49/ordering/json/userinfo.json")
+                            .build();
+
+                    client.newCall(userRequest1).execute();
+                    Response userResponse = client.newCall(userRequest2).execute();
+
+                    String userResData = userResponse.body().string();
+
+                    parseUserJSONWithGSON(userResData);
+
+                }catch (IOException e){
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
     public void refresh(){
         new Thread(new Runnable() {
             @Override
@@ -137,6 +167,7 @@ public class RefreshData {
             shopDBManager.getDb().execSQL("insert into shopInfo values("+shop.getShopID()+",'"+shop.getShopName()+"','"+shop.getShopImage()+
                     "','"+shop.getShopLocation()+"','"+shop.getShopBrief()+"')");
         }
+        shopDBManager.getDb().close();
     }
 
     private void parseDishJSONWithGSON(String jsonData) {
@@ -145,9 +176,10 @@ public class RefreshData {
         }.getType());
         dishDBManager.deleteDishInfo();
         for (Dish dish : dishList) {
-            shopDBManager.getDb().execSQL("insert into dishInfo values("+dish.getDishID()+",'"+dish.getShopID()+"','"+dish.getDishName()+
+            dishDBManager.getDb().execSQL("insert into dishInfo values("+dish.getDishID()+",'"+dish.getShopID()+"','"+dish.getDishName()+
                     "','"+dish.getDishImage()+"','"+dish.getDishPrice()+"','"+dish.getDishType()+"')");
         }
+        dishDBManager.getDb().close();
     }
 
     private void parseUserJSONWithGSON(String jsonData) {
@@ -156,9 +188,10 @@ public class RefreshData {
         }.getType());
         userDBManager.deleteUserInfo();
         for (User user : userList) {
-            shopDBManager.getDb().execSQL("insert into userInfo values("+user.getUserID()+",'"+user.getUserName()+"','"+user.getUserPWD()+
+            userDBManager.getDb().execSQL("insert into userInfo values("+user.getUserID()+",'"+user.getUserName()+"','"+user.getUserPWD()+
                     "','"+user.getUserTel()+"','"+user.getUserImage()+"')");
         }
+        userDBManager.getDb().close();
     }
 
     private void parseCartJSONWithGSON(String jsonData) {
@@ -168,11 +201,12 @@ public class RefreshData {
         cartDBManager.deleteCartInfo();
         if(cartList != null){
             for (Cart cart : cartList) {
-                shopDBManager.getDb().execSQL("insert into cartInfo values(null,'"+cart.getOrderID()+"',"+cart.getCartUserID()+
+                cartDBManager.getDb().execSQL("insert into cartInfo values(null,'"+cart.getOrderID()+"',"+cart.getCartUserID()+
                         ","+cart.getCartDishID()+","+cart.getCartShopID()+",'"+cart.getCartDishName()+"',"+cart.getCartDishNum()+","+cart.getCartDishPrice()+
                         ","+cart.getCartPrice()+",'"+cart.getCartStatus()+"','"+cart.getCartTime()+"')");
             }
         }
+        cartDBManager.getDb().close();
     }
 
     private void parseCommentJSONWithGSON(String jsonData) {
@@ -186,6 +220,7 @@ public class RefreshData {
                         "'," +comment.getShopID()+","+ comment.getDishID() + ",'" + comment.getCommentType() + "','" + comment.getComment() + "','" + comment.getCommentTime() + "')");
             }
         }
+        commentDBManager.getDb().close();
     }
 
     //图片json格式转换并存入目录

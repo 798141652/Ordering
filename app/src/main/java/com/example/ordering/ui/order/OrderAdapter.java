@@ -100,9 +100,6 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
         cartDBManager = new CartDBManager(mContext);
         cartDBManager.open();
 
-        commentDBManager = new CommentDBManager(mContext);
-        cartDBManager.open();
-
 
         //给CardView注册了一个点击事件监听器,在事件点击中获得当前点击项的订单项
         // 把它们传入到intent中，最后调用startActivity方法启动ShopActivity

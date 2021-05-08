@@ -307,7 +307,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     private void handleImageOnKitKat(Intent data){
         String imagePath = null;
         Uri uri = data.getData();//取出封装过的Uri对象
-
         if(DocumentsContract.isDocumentUri(this,uri)){
             //如果是document类型的Uri，则通过document id处理
             String docId = DocumentsContract.getDocumentId(uri);

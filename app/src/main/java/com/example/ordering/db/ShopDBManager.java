@@ -45,6 +45,7 @@ public class ShopDBManager {
         Cursor cursor = db.query(TABLE, null, "shopId ='" + shopid + "'",
                 null, null, null, null, null);
         int count = cursor.getCount();
+        cursor.close();
         if (count == 0) {
             return false;
         } else {
@@ -69,6 +70,7 @@ public class ShopDBManager {
         int count = cursor.getCount();
         if (count == 0 || !cursor.moveToFirst()) {
             System.out.println("数据表中没有数据");
+            cursor.close();
             return null;
         } else {
             shop.shopID = shopID;
@@ -76,6 +78,7 @@ public class ShopDBManager {
             shop.shopImage = cursor.getString(cursor.getColumnIndex("shopImage"));
             shop.shopBrief = cursor.getString(cursor.getColumnIndex("shopBrief"));
             shop.shopLocation = cursor.getString(cursor.getColumnIndex("shopLocation"));
+            cursor.close();
             return shop;
         }
     }

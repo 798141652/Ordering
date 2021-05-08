@@ -88,6 +88,7 @@ public class CartDBManager {
                 CART_UID + "='" + uid + "'and " + CART_DISH_ID + "='" +
                         id + "' and cartStatus ='0'", null, null, null, null, null);
         int count = cursor.getCount();
+        cursor.close();
         if (count == 0 || !cursor.moveToFirst()) {
             System.out.println("数据表中没有数据");
             return null;
@@ -114,10 +115,14 @@ public class CartDBManager {
         int count = cursor.getCount();
         if (count == 0) {
             System.out.println("数据表中没有数据");
+            cursor.close();
             return 0;
         } else {
             cursor.moveToFirst();
-            return cursor.getInt(cursor.getColumnIndex(CART_ID));
+            int dishID = cursor.getInt(cursor.getColumnIndex(CART_ID));
+            cursor.close();
+            return dishID;
+
         }
     }
 
@@ -136,12 +141,14 @@ public class CartDBManager {
         int count = cursor.getCount();
         if (count == 0 || !cursor.moveToFirst()) {
             System.out.println("数据表中没有数据");
+            cursor.close();
             return null;
         } else {
             dish.dishID = dishID;
             dish.shopID = cursor.getInt(cursor.getColumnIndex("shopID"));
             dish.dishName = cursor.getString(cursor.getColumnIndex("dishName"));
             dish.dishPrice = cursor.getDouble(cursor.getColumnIndex("dishPrice"));
+            cursor.close();
             return dish;
         }
     }
@@ -153,6 +160,7 @@ public class CartDBManager {
         );
         int count = cursor.getCount();
         if (count == 0 || !cursor.moveToFirst()) {
+            cursor.close();
             return null;
         } else {
             Cart[] cartlist = new Cart[count];
@@ -167,6 +175,7 @@ public class CartDBManager {
                 cartlist[i].cartDishPrice = cursor.getDouble(cursor.getColumnIndex(CART_DISH_PRICE));
                 cursor.moveToNext();
             }
+            cursor.close();
             return cartlist;
         }
     }
@@ -225,6 +234,7 @@ public class CartDBManager {
                 dishList.add(dish);
             }while(cursor.moveToNext());
         }
+        cursor.close();
         return dishList;
     }
 }

@@ -75,6 +75,7 @@ public class OrderViewModel extends ViewModel {
         //Cart cart = orderList.get(1).get(0);
         //System.out.println(orderList.get(0).get(0));
         cursor.close();
+        cartDBManager.getDb().close();
     }
 
     public List<Order> getOrderList(){

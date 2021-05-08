@@ -360,6 +360,7 @@ public class ShopFragment extends Fragment {
             shopDBManager.getDb().execSQL("insert into shopInfo values("+shop.getShopID()+",'"+shop.getShopName()+"','"+shop.getShopImage()+
                     "','"+shop.getShopLocation()+"','"+shop.getShopBrief()+"')");
         }
+        shopDBManager.getDb().close();
     }
 
     private void parseDishJSONWithGSON(String jsonData) {
@@ -368,9 +369,10 @@ public class ShopFragment extends Fragment {
         }.getType());
         dishDBManager.deleteDishInfo();
         for (Dish dish : dishList) {
-            shopDBManager.getDb().execSQL("insert into dishInfo values("+dish.getDishID()+",'"+dish.getShopID()+"','"+dish.getDishName()+
+            dishDBManager.getDb().execSQL("insert into dishInfo values("+dish.getDishID()+",'"+dish.getShopID()+"','"+dish.getDishName()+
                     "','"+dish.getDishImage()+"','"+dish.getDishPrice()+"','"+dish.getDishType()+"')");
         }
+        dishDBManager.getDb().close();
     }
 
     private void parseUserJSONWithGSON(String jsonData) {
@@ -379,9 +381,10 @@ public class ShopFragment extends Fragment {
         }.getType());
         userDBManager.deleteUserInfo();
         for (User user : userList) {
-            shopDBManager.getDb().execSQL("insert into userInfo values("+user.getUserID()+",'"+user.getUserName()+"','"+user.getUserPWD()+
+            userDBManager.getDb().execSQL("insert into userInfo values("+user.getUserID()+",'"+user.getUserName()+"','"+user.getUserPWD()+
                     "','"+user.getUserTel()+"','"+user.getUserImage()+"')");
         }
+        userDBManager.getDb().close();
     }
 
     private void parseCartJSONWithGSON(String jsonData) {
@@ -391,11 +394,12 @@ public class ShopFragment extends Fragment {
         cartDBManager.deleteCartInfo();
         if(cartList != null){
             for (Cart cart : cartList) {
-                shopDBManager.getDb().execSQL("insert into cartInfo values(null,'"+cart.getOrderID()+"',"+cart.getCartUserID()+
+                cartDBManager.getDb().execSQL("insert into cartInfo values(null,'"+cart.getOrderID()+"',"+cart.getCartUserID()+
                         ","+cart.getCartDishID()+","+cart.getCartShopID()+",'"+cart.getCartDishName()+"',"+cart.getCartDishNum()+","+cart.getCartDishPrice()+
                         ","+cart.getCartPrice()+",'"+cart.getCartStatus()+"','"+cart.getCartTime()+"')");
             }
         }
+        cartDBManager.getDb().close();
     }
 
     private void parseCommentJSONWithGSON(String jsonData) {
@@ -409,6 +413,7 @@ public class ShopFragment extends Fragment {
                         "'," +comment.getShopID()+","+ comment.getDishID() + ",'" + comment.getCommentType() + "','" + comment.getComment() + "','" + comment.getCommentTime() + "')");
             }
         }
+        commentDBManager.getDb().close();
     }
 
 }

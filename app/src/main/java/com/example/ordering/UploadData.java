@@ -102,7 +102,7 @@ public class UploadData {
                 Log.d("okhttp3", response.protocol() + " " +response.code() + " " + response.message());
                 Headers headers = response.headers();
                 for (int i = 0; i < headers.size(); i++) {
-                    Toast.makeText(MyApplication.getContext(),"请检查网络",Toast.LENGTH_SHORT).show();;
+                    //Toast.makeText(MyApplication.getContext(),"请检查网络",Toast.LENGTH_SHORT).show();;
                     Log.d("okhttp3", headers.name(i) + ":" + headers.value(i));
                 }
                 Log.d("okhttp3", "onResponse: " + response.body().string());
@@ -213,6 +213,7 @@ public class UploadData {
             cursor.moveToNext();
         }
         cursor.close();
+        cartDBManager.getDb().close();
 
         //开始上传cart数据库json进入服务器
         String json=resultSet.toString();
@@ -283,6 +284,7 @@ public class UploadData {
             cursor.moveToNext();
         }
         cursor.close();
+        commentDBManager.getDb().close();
 
         //开始上传Comment数据库json进入服务器
         String json=resultSet.toString();

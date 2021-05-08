@@ -13,7 +13,6 @@ public class CartOneDialog extends Dialog {
     public int mNum = 0;// 订购数量
 
     public ButtonID mBtnClicked = ButtonID.BUTTON_NONE;// 指示被点击按钮
-    CartDBManager db = new CartDBManager(getContext());
     // context 菜id，菜数量
     public CartOneDialog(Context context, int tvnum) {
         super(context);

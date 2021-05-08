@@ -44,8 +44,6 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
 
     private Cart cart;
 
-    private ShopDBManager shopDBManager;
-    private CartDBManager cartDBManager;
     private DishDBManager dishDBManager;
     private CommentDBManager commentDBManager;
 

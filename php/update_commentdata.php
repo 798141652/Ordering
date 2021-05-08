@@ -32,16 +32,4 @@ for($i=0;$i<$num;$i++){
 	}
 
 
-/* grab the posts from the db */
-//$query = "SELECT post_title, guid FROM wp_posts WHERE post_author     = $user_id AND post_status = 'publish' ORDER BY ID DESC LIMIT     $number_of_posts";
-/*
-$u=$obj->{'username'};
-$p=$obj->{'password'}; 
-mysqli_query("INSERT INTO userCart VALUES ('$u','$p')");
-
-echo mysqli_error($dbc);
-
-$dbc->close();
-*/
-
 ?>

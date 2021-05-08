@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.ordering.R;
-import com.example.ordering.db.CartDBManager;
 import com.example.ordering.db.DishDBManager;
 import com.example.ordering.dish.DishActivity;
 import com.example.ordering.structure.Cart;
@@ -34,7 +33,6 @@ public class OrderDishAdapter extends RecyclerView.Adapter<OrderDishAdapter.View
     private DishDBManager dishDBManager;
 
 
-    private CartDBManager cartDBManager;
 
     private MyApplication app;
 
@@ -65,8 +63,6 @@ public class OrderDishAdapter extends RecyclerView.Adapter<OrderDishAdapter.View
     @Override
     public OrderDishAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        //cartDBManager = new CartDBManager(mContext);
-        //cartDBManager.open();
 
         if(mContext == null){
             mContext = parent.getContext();

@@ -138,7 +138,7 @@ public class CartDishAdapter extends RecyclerView.Adapter<CartDishAdapter.ViewHo
 
             }
         });
-
+        cartDBManager.getDb().close();
         return holder;
     }
 
@@ -156,6 +156,7 @@ public class CartDishAdapter extends RecyclerView.Adapter<CartDishAdapter.ViewHo
         holder.dishName.setText(cart.getCartDishName());
         holder.dishNum.setText("X "+String.valueOf(cart.getCartDishNum()));
         holder.dishPrice.setText("￥"+String.valueOf(cart.getCartDishPrice()));
+        dishDBManager.getDb().close();
     }
 
     @Override
