@@ -10,7 +10,8 @@
 <!--是一个加强版的FrameLayout，可以监听所有子控件的各种事件，此控件可以解决SnackBar遮挡悬浮按钮的问题-->
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginTop="3dp">
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
@@ -61,8 +62,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
-            android:layout_marginBottom="15dp"
             android:layout_marginRight="15dp"
+            android:layout_marginBottom="15dp"
             android:src="@drawable/cart"
             app:elevation="8dp"
             app:backgroundTint="#61afea"/>

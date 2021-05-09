@@ -1,6 +1,5 @@
 <?php
 session_start();
-var_dump($_SESSION);
 include ('mysqli_connect.php');
 $userid=$_SESSION['userid'];
 if(!isset($userid)){
@@ -84,7 +83,7 @@ if(!isset($userid)){
 	
 	
     $res=mysqli_query($dbc,$sql);
-	echo("错误描述: " . mysqli_error($dbc)); 
+	//echo(mysqli_error($dbc)); 
     foreach ($res as $row){
         echo "<tr>";
         echo "<td>{$row['shopID']}</td>";

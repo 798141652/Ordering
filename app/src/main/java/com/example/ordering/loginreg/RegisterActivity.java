@@ -97,8 +97,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         //获取布局中的各组件
         tv_note = findViewById(R.id.reg_note);
         login_image = findViewById(R.id.login_image);
-        select_image = findViewById(R.id.select_image);
-        take_image = findViewById(R.id.take_image);
         et_userID = findViewById(R.id.reg_userID);
         et_password = findViewById(R.id.reg_passowrd);
         et_confirm = findViewById(R.id.reg_confirm);
@@ -106,8 +104,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         btn_register = findViewById(R.id.reg_btn_register);
         btn_back.setOnClickListener(this);
         btn_register.setOnClickListener(this);
-        select_image.setOnClickListener(this);
-        take_image.setOnClickListener(this);
         // 打开数据库
         dhelper = new UserDBManager(RegisterActivity.this);
         dhelper.open();
@@ -190,6 +186,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 //data.userID=userName;
                 data.userID=userID;
                 data.userPwd=password;
+                data.userName=null;
+                data.userTel=null;
+                data.userImage="image/defaultimage.jpeg";
                 // 写入数据库
                 dhelper.insert(data);
                 break;
@@ -200,163 +199,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 finish();
                 break;
             }
-            case R.id.take_image:{
-
-                //创建File对象，用于存储拍摄后的照片
-                File outputImage = new File(Environment.getExternalStorageDirectory(),"Picture");
-
-                if(!outputImage.exists()){
-                    outputImage.mkdir();
-                }
-
-                fileName = "IMG_" + System.currentTimeMillis() + ".jpg";
-                filePath = outputImage.getAbsolutePath() + "/" + fileName;
-
-                ContentValues contentValues = new ContentValues();
-
-                if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.Q){
-                    contentValues.put(MediaStore.Images.Media.RELATIVE_PATH,"DCIM/Pictures");
-                }else {
-                    contentValues.put(MediaStore.Images.Media.DATA,filePath);
-                }
-                //启动项目程序
-                Log.d("MainPhoto",String.valueOf(imageUri));
-
-                contentValues.put(MediaStore.Images.Media.MIME_TYPE,"image/JEPG");
-                imageUri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                        contentValues);
-                Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
-                intent.putExtra(MediaStore.EXTRA_OUTPUT,imageUri);//指定图片的输出地址
-                startActivityForResult(intent,TAKE_PHOTO);
-                break;
-            }
-            case R.id.select_image:{
-                //为了读取照片，申请授予程序对SD卡读和写能力的运行时权限
-                if(ContextCompat.checkSelfPermission(RegisterActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
-                    ActivityCompat.requestPermissions(RegisterActivity.this,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},1);
-                }else {
-                    openAlbum();
-                }
-                break;
-            }
             default:
                 break;
         }
     }
-
-    public void openAlbum(){
-        //创建Intent对象
-        Intent intent = new Intent("android.intent.action.GET_CONTENT");
-        intent.setType("image/*");//设置必要参数
-        startActivityForResult(intent,CHOOSE_PHOTO);//打开相册，第二个参数为CHOOSE_PHOTO
-    }
-
-
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode){
-            case 1:
-                if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                    openAlbum();
-                }else {
-                    Toast.makeText(this,"You Denied ths permission",Toast.LENGTH_SHORT).show();
-                }
-                break;
-            default:
-        }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode) {
-            case TAKE_PHOTO:
-                if (resultCode == RESULT_OK) {
-                    try {
-                        String selection = MediaStore.Images.Media.DISPLAY_NAME + "=? ";
-
-                        Cursor cursor = getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                                new String[]{MediaStore.Images.Media._ID},selection,new String[]{fileName},null);
-                        if(cursor != null && cursor.moveToFirst()){
-                            do{
-                                imageUri = ContentUris.withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,cursor.getLong(0));
-                                InputStream inputStream = getContentResolver().openInputStream(imageUri);
-                                Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-                                login_image.setImageBitmap(bitmap);
-                            }while (cursor.moveToNext());
-                        }else {
-                            Toast.makeText(this,"no photo",Toast.LENGTH_SHORT).show();
-                        }
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    }
-                }
-                break;
-            case CHOOSE_PHOTO:
-                if(resultCode == RESULT_OK){
-                    System.out.println("photo"+data);
-                    handleImageOnKitKat(data);
-                }
-                break;
-            default:
-                break;
-        }
-    }
-
-    private void handleImageOnKitKat(Intent data){
-        String imagePath = null;
-        Uri uri = data.getData();//取出封装过的Uri对象
-        if(DocumentsContract.isDocumentUri(this,uri)){
-            //如果是document类型的Uri，则通过document id处理
-            String docId = DocumentsContract.getDocumentId(uri);
-            if("com.android.providers.media.documents".equals(uri.getAuthority())){
-                //如果Uri的authority是media格式的话，需要对document id进行再一次的解析，通过字符串分割的方式取出后半部分得到真正的数字id
-                String id = docId.split(":")[1];//解析出数字格式的id
-                System.out.println("photoURI id "+id);
-                String selection = MediaStore.Images.Media._ID + "=" + id;//取出的id构建新的Uri和条件语句
-                System.out.println("photoURI selection "+selection);
-                imagePath = getImagePath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,selection);//传入getImagePath()方法，获得图片的真实路径
-                System.out.println("photoURI imagepath "+imagePath);
-            }else if("com.android.providers.dowmloads.documents".equals(uri.getAuthority())){
-                Uri contentUri = ContentUris.withAppendedId(Uri.parse("content://downloads/public_downloads"),Long.valueOf(docId));
-                imagePath = getImagePath(contentUri,null);
-            }
-        }else if ("content".equalsIgnoreCase(uri.getScheme())){
-            //如果是content类型的Uri，则使用普通方式处理
-            imagePath = getImagePath(uri,null);
-        }else if ("file".equalsIgnoreCase(uri.getScheme())){
-            //如果是file类型的Uri，直接获取图片路径即可
-            imagePath = uri.getPath();
-        }
-
-        displayImage(imagePath);//依据图片路径显示图片
-    }
-
-    private String getImagePath(Uri uri, String selection){
-        String path = null;
-        //通过Uri和selection来获取真实的图片路径
-        Cursor cursor = getContentResolver().query(uri,null,selection,null,null);
-        if(cursor != null){
-            if(cursor.moveToNext()){
-                path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
-                System.out.println("PhotoUri "+path);
-            }
-            cursor.close();
-        }
-        return path;
-    }
-
-    private void displayImage(String imagePath){
-        if(imagePath != null){
-            Log.d("MainPhoto",imagePath);
-            Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
-            Log.d("MainPhoto",String.valueOf(bitmap));
-            login_image.setImageBitmap(bitmap);
-        }else {
-            Toast.makeText(this,"failed to get image",Toast.LENGTH_SHORT).show();
-        }
-    }
-
-
 }

@@ -360,7 +360,7 @@ public class ShopFragment extends Fragment {
             shopDBManager.getDb().execSQL("insert into shopInfo values("+shop.getShopID()+",'"+shop.getShopName()+"','"+shop.getShopImage()+
                     "','"+shop.getShopLocation()+"','"+shop.getShopBrief()+"')");
         }
-        shopDBManager.getDb().close();
+        //shopDBManager.getDb().close();
     }
 
     private void parseDishJSONWithGSON(String jsonData) {
@@ -372,7 +372,7 @@ public class ShopFragment extends Fragment {
             dishDBManager.getDb().execSQL("insert into dishInfo values("+dish.getDishID()+",'"+dish.getShopID()+"','"+dish.getDishName()+
                     "','"+dish.getDishImage()+"','"+dish.getDishPrice()+"','"+dish.getDishType()+"')");
         }
-        dishDBManager.getDb().close();
+        //dishDBManager.getDb().close();
     }
 
     private void parseUserJSONWithGSON(String jsonData) {
@@ -384,7 +384,7 @@ public class ShopFragment extends Fragment {
             userDBManager.getDb().execSQL("insert into userInfo values("+user.getUserID()+",'"+user.getUserName()+"','"+user.getUserPWD()+
                     "','"+user.getUserTel()+"','"+user.getUserImage()+"')");
         }
-        userDBManager.getDb().close();
+        //userDBManager.getDb().close();
     }
 
     private void parseCartJSONWithGSON(String jsonData) {
@@ -399,7 +399,7 @@ public class ShopFragment extends Fragment {
                         ","+cart.getCartPrice()+",'"+cart.getCartStatus()+"','"+cart.getCartTime()+"')");
             }
         }
-        cartDBManager.getDb().close();
+        //cartDBManager.getDb().close();
     }
 
     private void parseCommentJSONWithGSON(String jsonData) {
@@ -413,7 +413,7 @@ public class ShopFragment extends Fragment {
                         "'," +comment.getShopID()+","+ comment.getDishID() + ",'" + comment.getCommentType() + "','" + comment.getComment() + "','" + comment.getCommentTime() + "')");
             }
         }
-        commentDBManager.getDb().close();
+        //commentDBManager.getDb().close();
     }
 
 }

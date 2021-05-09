@@ -48,7 +48,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="用户ID:"
-                    android:textColor="#000"
+                    android:textColor="#fff"
                     android:textSize="17sp" />
 
                 <TextView
@@ -56,7 +56,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:textColor="#000"
+                    android:textColor="#fff"
                     android:textSize="17sp" />
 
             </LinearLayout>
@@ -67,6 +67,7 @@
                 android:layout_height="50dp"
                 android:layout_below="@+id/uimage"
                 android:layout_centerInParent="true"
+                android:tint="#fff"
                 android:src="@drawable/line" />
 
             <LinearLayout
@@ -81,7 +82,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="用户名:"
-                    android:textColor="#000"
+                    android:textColor="#fff"
                     android:textSize="17sp" />
 
                 <TextView
@@ -89,7 +90,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:textColor="#000"
+                    android:textColor="#fff"
                     android:textSize="17sp" />
             </LinearLayout>
         </RelativeLayout>
@@ -247,6 +248,44 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginEnd="10dp"
                 android:src="@drawable/youjiantou" />
+
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:background="#f2f2f2" />
+
+        <LinearLayout
+            android:id="@+id/logout"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:orientation="horizontal"
+            android:paddingLeft="20dp">
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/logout1" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="12dp"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="退出"
+                android:textColor="#000000"
+                android:textSize="15sp" />
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="10dp"
+                android:src="@drawable/youjiantou" />
+
+
         </LinearLayout>
 
         <View

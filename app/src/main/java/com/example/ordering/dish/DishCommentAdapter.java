@@ -87,7 +87,7 @@ public class DishCommentAdapter extends RecyclerView.Adapter<DishCommentAdapter.
         comment = commentList.get(position);
         holder.commentType.setText(comment.getCommentType());
         holder.comment.setText(comment.getComment());
-        holder.commentUser.setText(String.valueOf(comment.getUserID()));
+        holder.commentUser.setText("用户: "+String.valueOf(comment.getUserID()));
         holder.commentTime.setText(comment.getCommentTime());
     }
 

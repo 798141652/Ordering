@@ -105,23 +105,10 @@
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/reg_btn_register"
         android:layout_toRightOf="@+id/reg_btn_register"
+        android:layout_marginLeft="33dp"
         android:backgroundTint="#3397e4"
         android:text="返回登陆" />
-    <Button
-        android:id="@+id/take_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/reg_btn_login"
-        android:backgroundTint="#3397e4"
-        android:text="拍照"/>
-    <Button
-        android:id="@+id/select_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/reg_btn_login"
-        android:layout_toRightOf="@+id/take_image"
-        android:backgroundTint="#3397e4"
-        android:text="相册选择照片"/>
+
 
     </RelativeLayout>
 

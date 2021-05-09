@@ -16,12 +16,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 $adsql="select * from staffInfo where userID={$acco} and userPwd='{$pw}' and userType=1";
 $adres=mysqli_query($dbc,$adsql);
-echo "hhhh";
-var_dump($adres);
+
 
 $resql="select * from staffInfo where userID={$acco} and userPwd='{$pw}' and userType=2";
 $reres=mysqli_query($dbc,$resql);
-var_dump($reres);
 
 if(mysqli_num_rows($adres)==1 ){
     session_start();

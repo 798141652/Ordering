@@ -152,7 +152,7 @@ public class CartActivity extends AppCompatActivity {
         dbManager = new CartDBManager(MyApplication.getContext());
         dbManager.open();
         Cursor cursor = dbManager.getDb().query("cartInfo", new String[]{"distinct dishShop"}, "cartStatus = '0' and userID =" +
-                app.getUid(), null, null, null, null);
+                app.getUid(), null, null, null, "cartID desc");
 
         if (cursor.moveToFirst()) {
             do {

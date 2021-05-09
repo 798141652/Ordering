@@ -1,6 +1,5 @@
 <?php
 session_start();
-var_dump($_SESSION);
 $userid=$_SESSION['userid'];
 if(!isset($userid)){
 	 echo "<script>alert('身份信息过期！请重新登录！');</script>";
@@ -12,7 +11,6 @@ require_once 'imagecompress.php';
 
 
 $sqls="select shopName,shopImage,shopLocation,shopBrief from shopInfo where shopID={$shopid}";
-echo $sqls;
 $ress=mysqli_query($dbc,$sqls);
 $results=mysqli_fetch_array($ress);
 
@@ -102,7 +100,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 		$percent = 0.5;
 		//压缩后的图片存入内部目录
 		$imagePath = "image/shopPhoto".$shopID.".".image_type_to_extension(getimagesize($_FILES["img"]["tmp_name"])[2],false);
-		echo $imagePath;
 		if(file_exists($imagePath)){
 		unlink($imagePath);
 		}

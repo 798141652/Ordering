@@ -46,14 +46,16 @@ public class UserDBManager {
     }
 
     // 添加一个用户
-    public long insert(User userinfo) {
+    public void insert(User userinfo) {
         ContentValues cv = new ContentValues();
         cv.put(UID, userinfo.userID);
         cv.put(NAME, userinfo.userName);
         cv.put(PASSWORD, userinfo.userPwd);
         cv.put(PHONE, userinfo.userTel);
         cv.put(IMAGE, userinfo.userImage);
-        return db.insert(TABLE, null, cv);
+
+        db.insert(TABLE, null, cv);
+        upLoad();
     }
 
 
@@ -169,6 +171,11 @@ public class UserDBManager {
     public void deleteUserInfo() {
         db.execSQL("delete from userInfo");
         db.execSQL("update sqlite_sequence set seq=0 where name='userInfo'");
+    }
+
+    public void upLoad(){
+        UploadData uploadData = new UploadData();
+        uploadData.uploadUser();
     }
 
 }

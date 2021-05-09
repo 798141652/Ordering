@@ -6,6 +6,7 @@ import android.widget.Toast;
 
 import com.example.ordering.db.CartDBManager;
 import com.example.ordering.db.CommentDBManager;
+import com.example.ordering.db.UserDBManager;
 import com.example.ordering.structure.Comment;
 import com.example.ordering.structure.MyApplication;
 import com.loopj.android.http.AsyncHttpClient;
@@ -168,6 +169,76 @@ public class UploadData {
                     Log.d("okhttp3", headers.name(i) + ":" + headers.value(i));
                 }
                 Log.d("okhttp3", "onResponse: " + response.body().string());
+            }
+        });
+    }
+
+    //上传用户信息进入服务器
+    public void uploadUser(){
+        MediaType JSON = MediaType.parse("application/json;charset=UTF-8");
+        JSONObject jsonObject=new JSONObject();
+        JSONArray jsonArray=new JSONArray();
+        UserDBManager userDBManager = new UserDBManager(MyApplication.getContext());
+        userDBManager.open();
+
+        String searchQuery = "SELECT * FROM userInfo" ;
+        Cursor cursor = userDBManager.getDb().rawQuery(searchQuery, null );
+        JSONArray resultSet = new JSONArray();
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            int totalColumn = cursor.getColumnCount();
+            JSONObject rowObject = new JSONObject();
+            for( int i=0 ;  i< totalColumn ; i++ )
+            {
+                if( cursor.getColumnName(i) != null )
+                {
+                    try
+                    {
+                        if( cursor.getString(i) != null )
+                        {
+                            //Log.d("userTable", cursor.getString(i) );
+                            rowObject.put(cursor.getColumnName(i) ,  cursor.getString(i) );
+                        }
+                        else
+                        {
+                            rowObject.put( cursor.getColumnName(i) ,  "" );
+                        }
+                    }
+                    catch( Exception e )
+                    {
+                        // Log.d("userTable", e.getMessage()  );
+                    }
+                }
+            }
+            resultSet.put(rowObject);
+            cursor.moveToNext();
+        }
+        cursor.close();
+        userDBManager.getDb().close();
+
+        //开始上传cart数据库json进入服务器
+        String json=resultSet.toString();
+        //创建一个OkHttpClient对象
+        OkHttpClient okHttpClient = new OkHttpClient();
+        //创建一个RequestBody(参数1：数据类型 参数2传递的json串)
+        RequestBody requestBody = RequestBody.create(JSON, json);
+        //创建一个请求对象
+        Request request = new Request.Builder()
+                .url("http://49.234.101.49/ordering/update_user.php")
+                .post(requestBody)
+                .build();
+
+        Call call=okHttpClient.newCall(request);
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Toast.makeText(MyApplication.getContext(),"请检查网络",Toast.LENGTH_SHORT).show();;
+                Log.i("okhttp3", "onFailure: " + e);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                Log.i("okhttp3", "onResponse: " + response.body().string());
             }
         });
     }

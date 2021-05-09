@@ -1,6 +1,5 @@
 <?php
 session_start();
-var_dump($_SESSION);
 $shopid=$_SESSION['userBelong'];
 $userid=$_SESSION['userid'];
 if(!isset($userid)){
@@ -85,13 +84,11 @@ require_once 'imagecompress.php';
 if ($_SERVER["REQUEST_METHOD"] == "POST")
 {
     $dishName = $_POST["dishName"];
-	echo $shopName;
     $dishPrice = $_POST["dishPrice"];
     $dishType = $_POST["dishType"];
 	
 	//由于id自增，所以先插入除了id以及image外的数据
 	$sqla="insert into dishInfo VALUES (NULL ,{$shopid},'{$dishName}',NULL,'{$dishPrice}','{$dishType}')";
-	var_dump($dbc);
 	$resa=mysqli_query($dbc,$sqla);
 	$dishID=mysqli_insert_id($dbc);
 		
@@ -104,7 +101,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 		$percent = 0.3;
 		//压缩后的图片存入内部目录
 		$imagePath = "image/dishPhoto".$dishID.".".image_type_to_extension(getimagesize($_FILES["img"]["tmp_name"])[2],false);
-		echo $imagePath;
 		(new imgcompress($_FILES["img"]["tmp_name"],$percent))->compressImg($imagePath);
 	}
 	$sqla="update dishInfo set dishImage = '{$imagePath}' where dishID = {$dishID}";

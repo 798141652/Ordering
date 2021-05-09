@@ -2,6 +2,8 @@ package com.example.ordering;
 
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.Window;
+import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -13,7 +15,14 @@ public class ShowVersion extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_change_user_name);
+
+        Window window = getWindow();
+        //设置修改状态栏
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        //设置状态栏的颜色，和你的APP主题或者标题栏颜色一致就可以了
+        window.setStatusBarColor(getResources().getColor(R.color.toolbarblue));
+
+        setContentView(R.layout.activity_show_version);
 
         /**标题栏初始化*/
         Toolbar toolbar = (Toolbar) this.findViewById(R.id.toolbar);

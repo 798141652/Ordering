@@ -82,13 +82,10 @@ public class CartDBManager {
     //查询一个菜单项
     public Cart queryonedish(int uid, int id) {
         Cart cart = new Cart();
-        Cursor cursor = db.query(CART_TABLE,
-                new String[]{CART_UID, CART_ID,CART_SHOP_ID, CART_DISH_ID,
-                        CART_DISH_NAME, CART_DISH_NUM, CART_DISH_PRICE,CART_STATUS},
-                CART_UID + "='" + uid + "'and " + CART_DISH_ID + "='" +
-                        id + "' and cartStatus ='0'", null, null, null, null, null);
+        String sql = "select * from cartInfo where userID = "+uid+" and dishID = "+id+" and cartStatus ='0'";
+        Cursor cursor = db.rawQuery(sql,null);
         int count = cursor.getCount();
-        cursor.close();
+
         if (count == 0 || !cursor.moveToFirst()) {
             System.out.println("数据表中没有数据");
             return null;
@@ -101,6 +98,7 @@ public class CartDBManager {
             cart.cartDishNum = cursor.getInt(cursor.getColumnIndex(CART_DISH_NUM));
             cart.cartDishPrice = cursor.getDouble(cursor.getColumnIndex(CART_DISH_PRICE));
             cart.cartStatus = cursor.getString(cursor.getColumnIndex(CART_STATUS));
+            cursor.close();
             return cart;
         }
     }
@@ -226,13 +224,25 @@ public class CartDBManager {
 
     public List<Dish> FashionDishList(){
         Cursor cursor = db.rawQuery("SELECT count(dishID) num, dishID from cartInfo group by dishID order by count(dishID) desc",null);
+        Cursor cursor1 = db.rawQuery("SELECT dishID from dishInfo",null);
         List<Dish> dishList = new ArrayList<>();
-        if(cursor.moveToFirst()){
+        int num = cursor.getCount();
+        if(cursor.moveToFirst()&&cursor.getCount()>=4){
+            int i = 0;
             do {
                 Dish dish = new Dish();
                 dish.dishID = cursor.getInt(cursor.getColumnIndex("dishID"));
                 dishList.add(dish);
+                i++;
             }while(cursor.moveToNext());
+        }else if(cursor1.moveToFirst()){
+            int i = 0;
+            do{
+                Dish dish = new Dish();
+                dish.dishID = cursor1.getInt(cursor1.getColumnIndex("dishID"));
+                dishList.add(dish);
+                i++;
+            }while (cursor1.moveToNext()&&i<4);
         }
         cursor.close();
         return dishList;

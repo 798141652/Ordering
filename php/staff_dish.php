@@ -1,6 +1,5 @@
 <?php
 session_start();
-var_dump($_SESSION);
 $shopid=$_SESSION['userBelong'];
 $userid=$_SESSION['userid'];
 if(!isset($userid)){
@@ -83,11 +82,9 @@ include ('mysqli_connect.php');
     <?php
     $gjc = $_POST["dishquery"];
     $sql="select dishID,dishName,dishImage,dishPrice,dishType from dishInfo where dishName like '%{$gjc}%' and shopID = {$shopid}";
-	echo $sql;
-	
+
 	
     $res=mysqli_query($dbc,$sql);
-	echo mysqli_error($dbc);
     foreach ($res as $row){
         echo "<tr>";
         echo "<td>{$row['dishID']}</td>";

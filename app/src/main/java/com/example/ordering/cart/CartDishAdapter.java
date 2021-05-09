@@ -108,17 +108,24 @@ public class CartDishAdapter extends RecyclerView.Adapter<CartDishAdapter.ViewHo
                             int uid = cart.cartUserID;
                             int dishid = cart.cartDishID;
                             Cart cartUpdate = cartDBManager.queryonedish(uid, dishid);
+
                             if (cartUpdate == null) {//购物车内没有找到菜单项
+                                if(orderDlg.mNum != 0){
                                 cart.cartStatus = "0";//购物车状态
                                 cartDBManager.insert(cart);
+                                Toast.makeText(mContext, cart.getCartDishName()+ " " + orderDlg.mNum + "份已经加入购物车", Toast.LENGTH_SHORT).show();
+                                }else {
+                                    Toast.makeText(mContext, "未选数量!", Toast.LENGTH_SHORT).show();
+                                }
                             } else if(cartUpdate.cartStatus.equals("0")){//购物车内找到菜单项
                                 if(orderDlg.mNum == 0){
                                     cartDBManager.deleteonedish(cartUpdate,cart.cartUserID);
+                                    Toast.makeText(mContext, "已从购物车删除该项!", Toast.LENGTH_SHORT).show();
                                 }else {
                                     cartDBManager.updateNumemenu(cartUpdate.cartUserID, cartUpdate.cartDishID, orderDlg.mNum);
+                                    Toast.makeText(mContext, cart.getCartDishName()+ " " + orderDlg.mNum + "份已经加入购物车", Toast.LENGTH_SHORT).show();
                                 }
                             }
-                            Toast.makeText(mContext, cart.cartDishName + " " + orderDlg.mNum + "份已经加入购物车", Toast.LENGTH_SHORT).show();
                             new Thread(new Runnable() {
                                 @Override
                                 public void run() {
@@ -138,7 +145,7 @@ public class CartDishAdapter extends RecyclerView.Adapter<CartDishAdapter.ViewHo
 
             }
         });
-        cartDBManager.getDb().close();
+        //cartDBManager.getDb().close();
         return holder;
     }
 
@@ -156,7 +163,7 @@ public class CartDishAdapter extends RecyclerView.Adapter<CartDishAdapter.ViewHo
         holder.dishName.setText(cart.getCartDishName());
         holder.dishNum.setText("X "+String.valueOf(cart.getCartDishNum()));
         holder.dishPrice.setText("￥"+String.valueOf(cart.getCartDishPrice()));
-        dishDBManager.getDb().close();
+        //dishDBManager.getDb().close();
     }
 
     @Override

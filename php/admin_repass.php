@@ -1,6 +1,5 @@
 <?php
 session_start();
-var_dump($_SESSION);
 $userid=$_SESSION['userid'];
 if(!isset($userid)){
 	 echo "<script>alert('身份信息过期！请重新登录！');</script>";
@@ -89,7 +88,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
             echo "<script>alert('密码修改成功！请重新登陆！')</script>";
             echo "<script>window.location.href='index.php'</script>";
         }
-
     }
     else{
         echo "<script>alert('两次输入密码不同，请重新输入！')</script>";

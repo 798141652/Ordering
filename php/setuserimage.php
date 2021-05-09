@@ -1,8 +1,6 @@
 <?php
 session_start();
-var_dump($_SESSION);
 $userid=$_POST['uid'];
-var_dump($userid);
 include ('mysqli_connect.php');
 require_once 'imagecompress.php';
 
@@ -23,7 +21,7 @@ require_once 'imagecompress.php';
 	}
 	$sqla="update userInfo set userImage = '{$imagePath}' where userID = {$userid}";
 	$resa=mysqli_query($dbc,$sqla);
-	echo mysqli_error($dbc);
+	//echo mysqli_error($dbc);
 	mysqli_close($dbc);
 
 ?>

@@ -1,6 +1,5 @@
 <?php
 session_start();
-var_dump($_SESSION);
 $shopid=$_SESSION['userBelong'];
 $userid=$_SESSION['userid'];
 if(!isset($userid)){
@@ -10,11 +9,9 @@ if(!isset($userid)){
 include ('mysqli_connect.php');
 
 $orderID = $_GET['orderid'];
-echo $orderID;
 $sql = "update userCart set cartStatus = '2' where orderID = {$orderID}";
 
 $res = mysqli_query($dbc,$sql);
-echo mysqli_error($dbc);
 
 ?>
 <!DOCTYPE html>
@@ -73,11 +70,10 @@ echo mysqli_error($dbc);
 <?php 	
     $sql1="select distinct cartTime,cartUserID,cartStatus from userCart where cartShopID = {$shopid} and cartStatus = '1'";
 	$res1=mysqli_query($dbc,$sql1);
-	echo mysqli_error($dbc);
-	
+
 	
 	foreach($res1 as $row1){
-		echo "<table border='4' width='100%' class='table table-hover'>
+		echo "<table border='4' width='100%' class='table table-hover' style='table-layout:fixed'>
 		<tr>
 			<th>菜品ID</th>
 			<th>菜品名称</th>

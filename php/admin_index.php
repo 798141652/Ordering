@@ -1,6 +1,5 @@
 <?php
 session_start();
-var_dump($_SESSION);
 $userid=$_SESSION['userid'];
 if(!isset($userid)){
 	 echo "<script>alert('身份信息过期！请重新登录！');</script>";

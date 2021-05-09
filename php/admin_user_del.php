@@ -10,7 +10,6 @@
 </html>
 <?php
 session_start();
-var_dump($_SESSION);
 include ('mysqli_connect.php');
 
 $delis=$_GET['id'];

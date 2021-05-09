@@ -1,6 +1,5 @@
 <?php
 session_start();
-var_dump($_SESSION);
 $userid=$_SESSION['userid'];
 if(!isset($userid)){
 	 echo "<script>alert('身份信息过期！请重新登录！');</script>";
@@ -29,7 +28,7 @@ require_once 'imagecompress.php';
     </style>
 </head>
 <body>
-<<nav class="navbar navbar-default navbar-static-top" role="navigation">
+<nav class="navbar navbar-default navbar-static-top" role="navigation">
     <div class="container-fluid">
         <div class="navbar-header">
             <a class="navbar-brand" href="#">Ordering点餐后台管理系统</a>
@@ -69,8 +68,8 @@ require_once 'imagecompress.php';
             <div class="input-group"><span class="input-group-addon">用户姓名</span><input name="userName" type="text" placeholder="请输入用户姓名" class="form-control"></div><br/>
             <div class="input-group"><span class="input-group-addon">用户电话</span><input name="userTel" type="text" placeholder="请输入用户电话" class="form-control"></div><br/>
 			<div class="input-group"><span class="input-group-addon">用户类型</span>
-				<input name="userType" type="radio" class="form-control" value="2">档口管理员用户
-				<input name="userType" type="radio" class="form-control" value="3">普通用户
+				<input name="userType" type="radio" class="form-control" value="2">档口管理员用户<br/>
+				<input name="userType" type="radio" class="form-control" value="3">普通用户<br/>
 			</div><br/>
             <div class="input-group"><span class="input-group-addon">用户照片</span></div><br/>
 			<input name="img" type="file"><br/>
@@ -100,7 +99,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 					$percent = 0.5;
 					//压缩后的图片存入内部目录
 					$imagePath = "image/userPhoto".$userID.".".image_type_to_extension(getimagesize($_FILES["img"]["tmp_name"])[2],false);
-					echo $imagePath;
 
 					(new imgcompress($_FILES["img"]["tmp_name"],$percent))->compressImg($imagePath);
 				}
@@ -149,11 +147,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 				mysqli_close($dbc);			
 	
 	}
-	
-
-	
-	
-
 }
 
 ?>

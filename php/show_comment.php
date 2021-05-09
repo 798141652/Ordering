@@ -1,6 +1,5 @@
 <?php
 session_start();
-var_dump($_SESSION);
 $userid=$_SESSION['userid'];
 if(!isset($userid)){
 	 echo "<script>alert('身份信息过期！请重新登录！');</script>";
@@ -64,10 +63,10 @@ include ('mysqli_connect.php');
     </div>
 </nav>
 <?php 	
-    $sql1="select commentID,orderID,dishID,userID,commentType,comment,shopID from userComment where shopID = ".$shopid.";";
-	var_dump($sql1);
+    $sql1="select commentID,orderID,dishID,userID,commentType,comment,shopID from userComment where shopID = ".$shopid." order by commentID desc;";
+	//var_dump($sql1);
 	$res1=mysqli_query($dbc,$sql1);
-	echo mysqli_error($dbc);
+	//echo mysqli_error($dbc);
 	
 	foreach($res1 as $row1){
 	$res2 = mysqli_query($dbc,"select dishName from dishInfo where dishID = {$row1['dishID']}");

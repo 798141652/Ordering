@@ -158,10 +158,11 @@
         android:id="@+id/cart_dish"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
+        android:layout_marginRight="50dp"
+        android:layout_marginBottom="50dp"
         android:src="@drawable/cart"
         app:layout_anchor="@id/dish_list"
         app:backgroundTint="#61afea"
-        app:layout_anchorGravity="bottom|end"/>
+        app:layout_anchorGravity="bottom|end" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

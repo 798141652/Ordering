@@ -15,27 +15,35 @@
             android:id="@+id/dish_comment_user"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="30sp"/>
+            android:layout_marginLeft="10dp"
+            android:textSize="23sp"
+            android:textColor="#000"/>
 
 
         <TextView
             android:id="@+id/dish_comment_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="5dp"
             android:layout_alignParentRight="true"/>
         <TextView
             android:id="@+id/dish_comment_rating"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/dish_comment_user"
-            android:textSize="25sp"/>
+            android:layout_toRightOf="@+id/dish_comment_user"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="5dp"
+            android:textSize="18sp"/>
 
         <TextView
             android:id="@+id/dish_comment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/dish_comment_rating"
-            android:textSize="23sp"/>
+            android:layout_below="@+id/dish_comment_user"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="10dp"
+            android:textSize="18sp"/>
 
 
 

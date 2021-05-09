@@ -60,6 +60,8 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         RatingBar rating;
         TextView ratingText;
         Button addComment;
+        TextView commentStatus;
+
 
         public ViewHolder(View view){
             super(view);
@@ -69,6 +71,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
             rating = view.findViewById(R.id.rating_star);
             ratingText = view.findViewById(R.id.rating_text);
             addComment = view.findViewById(R.id.add_comment);
+            commentStatus = view.findViewById(R.id.comment_status);
         }
     }
 
@@ -148,6 +151,9 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
                 comment.setComment(holder.comment.getText().toString());
                 comment.setCommentTime(commentTime);
                 commentDBManager.addComment(comment);
+                Toast.makeText(MyApplication.getContext(),"评论成功",Toast.LENGTH_SHORT).show();
+                holder.addComment.setVisibility(View.GONE);
+                holder.commentStatus.setText("已完成评论");
             }
         });
     }

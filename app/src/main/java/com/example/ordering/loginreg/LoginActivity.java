@@ -94,7 +94,7 @@ public class LoginActivity extends AppCompatActivity {
                     if (remuser.isChecked()) {
                         WriteUserPreference(userID, ukey, 1);
                     } else {
-                        WriteUserPreference(null, null, 0);
+                        WriteUserPreference(userID, null, 0);
                     }
 
                     // 修改状态

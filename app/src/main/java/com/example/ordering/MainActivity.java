@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         app = (MyApplication) getApplication();
+        //app = (MyApplication) MyApplication.getContext().getApplicationContext();
         super.onCreate(savedInstanceState);
 
         //Intent startIntent = new Intent(this, UpdateDataService.class);

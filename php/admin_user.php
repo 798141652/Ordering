@@ -1,6 +1,5 @@
 <?php
 session_start();
-var_dump($_SESSION);
 $userid=$_SESSION['userid'];
 if(!isset($userid)){
 	 echo "<script>alert('身份信息过期！请重新登录！');</script>";
@@ -84,7 +83,7 @@ include ('mysqli_connect.php');
 	
 	
     $res=mysqli_query($dbc,$sql);
-	echo("错误描述: " . mysqli_error($dbc)); 
+	echo(mysqli_error($dbc)); 
     foreach ($res as $row){
         echo "<tr>";
         echo "<td>{$row['userID']}</td>";

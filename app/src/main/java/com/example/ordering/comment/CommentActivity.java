@@ -4,10 +4,14 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
+import android.view.MenuItem;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -15,6 +19,8 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ordering.R;
+import com.example.ordering.cart.CartActivity;
+import com.example.ordering.cart.CartAdapter;
 import com.example.ordering.db.CartDBManager;
 import com.example.ordering.db.DishDBManager;
 import com.example.ordering.structure.Cart;
@@ -41,7 +47,7 @@ public class CommentActivity extends AppCompatActivity {
 
     private CommentAdapter commentAdapter;
 
-
+    private Handler handler;
 
     private int uid;
 
@@ -77,6 +83,8 @@ public class CommentActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String orderID = intent.getStringExtra("orderID");
         userCart = cartDBManager.queryCartByUser(uid);
+
+
         getOrderDishList(orderID);
         RecyclerView recyclerView = findViewById(R.id.comment_dish_list);
         GridLayoutManager layoutManager = new GridLayoutManager(CommentActivity.this, 1);//第一个参数为Context，第二个参数为列数
@@ -85,7 +93,10 @@ public class CommentActivity extends AppCompatActivity {
         recyclerView.setAdapter(commentAdapter);
         commentAdapter.notifyDataSetChanged();
 
+
     }
+
+
 
     public void getOrderDishList(String orderID) {
         cartList = new ArrayList<>();
@@ -115,5 +126,16 @@ public class CommentActivity extends AppCompatActivity {
         dishDBManager.getDb().close();
     }
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                onBackPressed();
+                break;
+            default:
+                break;
+        }
+        return true;
+    }
 
 }

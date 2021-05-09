@@ -1,6 +1,5 @@
 <?php
 session_start();
-var_dump($_SESSION);
 include ('mysqli_connect.php');
 require_once 'imagecompress.php';
 $shopid=$_GET['id'];
@@ -98,7 +97,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 		$percent = 0.5;
 		//压缩后的图片存入内部目录
 		$imagePath = "image/shopPhoto".$shopID.".".image_type_to_extension(getimagesize($_FILES["img"]["tmp_name"])[2],false);
-		echo $imagePath;
 		if(file_exists($imagePath)){
 		unlink($imagePath);
 	}

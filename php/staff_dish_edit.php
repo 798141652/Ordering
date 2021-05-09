@@ -1,6 +1,5 @@
 <?php
 session_start();
-var_dump($_SESSION);
 $userid=$_SESSION['userid'];
 if(!isset($userid)){
 	 echo "<script>alert('身份信息过期！请重新登录！');</script>";
@@ -106,7 +105,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 		$percent = 0.5;
 		//压缩后的图片存入内部目录
 		$imagePath = "image/dishPhoto".$dishID.".".image_type_to_extension(getimagesize($_FILES["img"]["tmp_name"])[2],false);
-		echo $imagePath;
 		if(file_exists($imagePath)){
 			echo "exist";
 		unlink($imagePath);
@@ -115,7 +113,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 	}
 
 	$sqla="update dishInfo set dishName='{$dishName}',dishImage='{$imagePath}',dishPrice='{$dishPrice}',dishType='{$dishType}' where dishID=$dishID;";
-	echo $sqla;
     $resa=mysqli_query($dbc,$sqla);
 
 if($resa==1)

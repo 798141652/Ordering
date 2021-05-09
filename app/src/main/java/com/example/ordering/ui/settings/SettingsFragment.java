@@ -1,11 +1,13 @@
 package com.example.ordering.ui.settings;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.ComponentName;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -37,6 +39,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.ordering.ChangeUserName;
 import com.example.ordering.ChangeUserPwd;
 import com.example.ordering.ChangeUserTel;
+import com.example.ordering.MainActivity;
 import com.example.ordering.R;
 import com.example.ordering.ShowVersion;
 import com.example.ordering.structure.MyApplication;
@@ -76,6 +79,7 @@ public class SettingsFragment extends Fragment {
     private LinearLayout changeUserTel;
     private LinearLayout changeUserPwd;
     private LinearLayout showVersion;
+    private LinearLayout logout;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -94,6 +98,12 @@ public class SettingsFragment extends Fragment {
             changeUserPwd = root.findViewById(R.id.change_user_pwd);
             changeUserTel = root.findViewById(R.id.change_user_tel);
             showVersion = root.findViewById(R.id.show_version);
+            logout = root.findViewById(R.id.logout);
+            Glide.with(this).load("http://49.234.101.49/ordering/" + user.getUserImage())
+                .placeholder(R.drawable.loading)
+                //.skipMemoryCache(true)
+                //.diskCacheStrategy(DiskCacheStrategy.NONE)
+                .into(imageViewUser);
             initViews();
             System.out.println("init");
             return root;
@@ -120,14 +130,18 @@ public class SettingsFragment extends Fragment {
     private void initViews() {
             String uID = app.getUid();
             user = settingsViewModel.getUser(uID);
+            /*
             Glide.with(this).load("http://49.234.101.49/ordering/" + user.getUserImage())
                     .placeholder(R.drawable.loading)
                     //.skipMemoryCache(true)
                     //.diskCacheStrategy(DiskCacheStrategy.NONE)
                 .into(imageViewUser);
-            Glide.with(this).load("http://49.234.101.49/ordering/image/defaultimage.jpeg")
-                    .placeholder(R.drawable.loading)
-                    .into(imageViewBar);
+
+                */
+            //Glide.with(this).load("http://49.234.101.49/ordering/image/defaultimage.jpeg")
+            //        .placeholder(R.drawable.loading)
+            //        .into(imageViewBar);
+            imageViewBar.setImageResource(R.drawable.bg);
             textViewUID.setText(""+uID);
             textViewUName.setText(user.getUserName());
 
@@ -175,6 +189,21 @@ public class SettingsFragment extends Fragment {
                 }
             });
 
+            logout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //app.setState(1);
+                    //item.setIcon(getResources().getDrawable(R.drawable.ic_backup));
+                    app.setLoginstatus(false);
+                    SharedPreferences uSetting = app.getSharedPreferences("logindata", Activity.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = uSetting.edit();
+                    editor.putInt("iflogin",0);
+                    editor.apply();
+                    Intent intent = new Intent("com.example.ordering.login");
+                    startActivity(intent);
+                    Toast.makeText(getActivity(),"退出登录",Toast.LENGTH_SHORT).show();
+                }
+            });
 
     }
 

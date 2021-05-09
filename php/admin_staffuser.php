@@ -1,14 +1,11 @@
 <?php
 session_start();
-
-var_dump($_SESSION);
 include ('mysqli_connect.php');
 $userid=$_SESSION['userid'];
 if(!isset($userid)){
 	 echo "<script>alert('身份信息过期！请重新登录！');</script>";
 	 echo "<script>window.location.href='index.php'</script>";
 }
-include ('mysqli_connect.php');
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -84,9 +81,8 @@ include ('mysqli_connect.php');
     $gjc = $_POST["userquery"];
     $sql="select userID,userName,userTel,userBelong from staffInfo where userType = '2' and userName like '%{$gjc}%';";
     $res=mysqli_query($dbc,$sql);
-	echo("错误描述: " . mysqli_error($dbc)); 
+	//echo(mysqli_error($dbc)); 
     foreach ($res as $row){
-		var_dump($row);
 		$sql1 = "select shopName from shopInfo where shopID = {$row['userBelong']};";
 		$res1 = mysqli_query($dbc,$sql1);
 		$shopName = mysqli_fetch_row($res1)[0];
